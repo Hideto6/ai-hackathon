@@ -1,17 +1,83 @@
 ---
-description: FSD準拠のデモUI作成時の注意事項を読み込む
+description: じじいにゅーす向けのデモUI作成ルールと現在のフロントエンド構成を読み込む
 ---
 
-# FSD準拠 デモUI作成ガイドライン v1
+# じじいにゅーす Design Init v1
 
-このプロンプトを読んだ後、プロジェクト内のフロントエンド設計ドキュメントが存在する場合はそれも確認してください。
-このリポジトリは `frontend/` に Next.js App Router + TypeScript + Tailwind を持つ構成を前提にします。
+このプロンプトは、`jijii-news` の UI デザインとデモ実装を始める前に読む前提のガイドです。  
+このリポジトリでは `frontend/` が Next.js App Router の独立フロントエンドです。  
+デザイン作業では、見た目の派手さよりも「学生が 30 秒でニュースを気にして読める体験」を優先してください。
 
 ---
 
-## 0. このリポジトリでの前提構成
+## 0. アプリ概要
 
-FSDに寄せつつ、Next.js App Router と shadcn/ui を無理なく運用するため、基本の配置は以下を推奨します。
+### 背景課題
+
+学生が政治・社会ニュースを見ない理由:
+
+- 専門用語が多く理解が難しい
+- 興味が湧かない
+- 情報量が多すぎる
+- ニュースの背景がわからない
+- 忙しくて読む時間がない
+- アプリを開く手間がある
+
+その結果:
+
+**社会に関する知識が少なく、視点やアウトプットが広がらない。**
+
+### コンセプト
+
+**じじい構文 × 超短時間ニュース**
+
+- 通知で気にならせる
+- 開いたら 3 カードで読む
+- 30 秒で「何が起きたか」と「自分への影響」がわかる
+
+### 主な機能
+
+1. おじさん構文通知
+2. 3 カードニュース
+3. 専門用語ポップアップ
+4. 読了後レコメンド
+5. 今日のニュース 3 本表示
+6. ニュース保存機能
+
+---
+
+## 1. このアプリで守る体験原則
+
+### 1-1. 優先順位
+
+UI を作る時の優先順位は以下。
+
+1. 一目で意味が伝わる
+2. 30 秒で読み切れる
+3. 気になって次を押したくなる
+4. 難しいニュースを軽く感じる
+5. 少し遊び心がある
+
+### 1-2. トーン
+
+- ベースは親しみやすい
+- ただし「ふざけすぎ」にはしない
+- おじさん構文は通知や導入のフックに使い、本文は理解しやすさを優先する
+- かわいさより、**軽さ・速さ・気軽さ**を出す
+
+### 1-3. デザインの方向性
+
+- 情報量は少なく見せる
+- 1 画面 1 メッセージを徹底する
+- ニュースアプリというより、**ストーリー形式の短尺コンテンツ**として見せる
+- 「重いニュースアプリ感」は避ける
+- 初見ユーザーが迷わないよう、導線は少なくする
+
+---
+
+## 3. 今後の推奨構成
+
+このリポジトリはまだ立ち上げ直後なので、今後の UI 実装は以下の形に寄せる。
 
 ```txt
 frontend/
@@ -20,321 +86,370 @@ frontend/
     │   ├── (public)/
     │   │   └── design-test/
     │   │       └── page.tsx
-    │   ├── sample/
+    │   ├── news/
+    │   │   └── [newsId]/
+    │   │       └── page.tsx
+    │   ├── saved/
+    │   │   └── page.tsx
+    │   ├── today/
     │   │   └── page.tsx
     │   ├── layout.tsx
+    │   ├── page.tsx
     │   └── globals.css
     ├── page-components/
-    │   └── sample/
-    │       ├── home/
-    │       ├── detail/
-    │       ├── basic-information/
-    │       └── register/
+    │   ├── home/
+    │   │   ├── ui/
+    │   │   │   └── HomeContainer.tsx
+    │   │   ├── ui-block/
+    │   │   │   ├── hero/
+    │   │   │   ├── today-news/
+    │   │   │   ├── notification-preview/
+    │   │   │   └── onboarding/
+    │   │   ├── dummy-data/
+    │   │   └── model/
+    │   ├── news-detail/
+    │   │   ├── ui/
+    │   │   │   └── NewsDetailContainer.tsx
+    │   │   ├── ui-block/
+    │   │   │   ├── story-cards/
+    │   │   │   ├── glossary-popover/
+    │   │   │   ├── recommendation/
+    │   │   │   └── save-action/
+    │   │   ├── dummy-data/
+    │   │   └── model/
+    │   ├── saved-news/
+    │   └── today-news/
     ├── widgets/
-    │   ├── header/
-    │   │   └── ui/
-    │   └── sidebar/
-    │       └── ui/
+    │   ├── app-header/
+    │   ├── bottom-navigation/
+    │   ├── news-card-stack/
+    │   └── push-notice-preview/
     ├── features/
+    │   ├── save-news/
+    │   ├── swipe-news-card/
+    │   ├── open-glossary-term/
+    │   └── read-next-news/
     ├── entities/
-    ├── shared/
-    │   ├── ui/
-    │   │   ├── shadcn/
-    │   │   │   └── ui/
-    │   │   ├── form-fields/
-    │   │   │   └── ui/
-    │   │   └── components/
-    │   │       ├── empty-design/
-    │   │       └── delete-confirm-dialog/
-    │   ├── lib/
-    │   ├── hooks/
-    │   ├── config/
-    │   └── types/
-    └── styles/
-
-backend/
-├── package.json
-└── README.md
+    │   ├── news/
+    │   ├── glossary-term/
+    │   └── notification-message/
+    └── shared/
+        ├── ui/
+        │   ├── shadcn/
+        │   │   ├── lib/
+        │   │   └── ui/
+        │   ├── components/
+        │   │   ├── empty-state/
+        │   │   ├── section-title/
+        │   │   ├── news-chip/
+        │   │   └── impact-badge/
+        │   └── form-fields/
+        ├── lib/
+        ├── hooks/
+        ├── config/
+        └── types/
 ```
 
-### shadcn/ui の配置方針
+### 重要
 
-- shadcn/ui の生成先は `frontend/src/shared/ui/shadcn/ui/` を推奨する
-- `Button`, `Dialog`, `Skeleton`, `Table` などのプリミティブはこの配下に置く
-- アプリ固有の見た目や意味を持つものは shadcn/ui に混ぜず、`shared/ui/components/` か各 slice 配下に置く
-- `components.json` を使う場合も alias は `@/shared/ui/shadcn/ui` に寄せる
-- import は直接パス指定にし、`index.ts` は作らない
+- App Router の `page.tsx` は薄く保つ
+- ページ固有 UI は `page-components/`
+- アプリ全体で再利用する中くらいの UI は `widgets/`
+- 操作単位の責務は `features/`
+- ドメイン概念は `entities/`
+- 原始 UI は `shared/`
 
 ---
 
-## 1. ディレクトリ構造とファイル命名
+## 4. App 層のルール
 
-### App層
+- `frontend/src/app/**/page.tsx` はできるだけ薄くする
+- 原則として `page-components/**/ui/*Container.tsx` を呼ぶだけにする
+- `layout.tsx` には global font、theme、providers、toast などだけを置く
+- デザイン確認だけが目的なら `frontend/src/app/(public)/design-test/page.tsx` に直接書いてよい
 
-- App層は**できるだけ薄く**する
-- `frontend/src/app/**/page.tsx` では `page-components` 層の `slice/ui/XxxxContainer` を呼び出すだけにする
-- デザイン確認だけが目的なら `frontend/src/app/(public)/design-test/page.tsx` に直接実装してよい
-- `layout.tsx` には全体レイアウトと providers だけを置き、業務UIは置かない
-
-### App層の例
+### 良い例
 
 ```tsx
-import { SampleHomeContainer } from "@/page-components/sample/home/ui/SampleHomeContainer";
+import { HomeContainer } from "@/page-components/home/ui/HomeContainer";
 
-export default function SamplePage() {
-  return <SampleHomeContainer />;
+export default function Page() {
+  return <HomeContainer />;
 }
 ```
 
-### Page-Components層の構造
+### 例外
 
-```txt
-frontend/src/page-components/
-└── sample/
-    ├── home/
-    │   ├── ui/
-    │   │   └── SampleHomeContainer.tsx
-    │   ├── ui-block/
-    │   │   ├── table-view/
-    │   │   │   ├── ui/
-    │   │   │   │   ├── SampleTable.tsx
-    │   │   │   │   ├── components/
-    │   │   │   │   │   └── SampleCard.tsx
-    │   │   │   │   └── skeleton/
-    │   │   │   │       └── SampleTableSkeleton.tsx
-    │   │   │   ├── model/
-    │   │   │   │   └── types.ts
-    │   │   │   ├── lib/
-    │   │   │   └── config/
-    │   │   │       └── column-config.tsx
-    │   │   ├── dashboard-panel/
-    │   │   │   ├── ui/
-    │   │   │   │   └── DashboardPanel.tsx
-    │   │   │   └── model/
-    │   │   └── header/
-    │   │       └── ui/
-    │   │           └── SampleHeader.tsx
-    │   ├── dummy-data/
-    │   │   └── samples.ts
-    │   └── model/
-    │       └── types.ts
-    ├── detail/
-    │   └── ui/
-    │       └── SampleDetailContainer.tsx
-    ├── basic-information/
-    │   └── ui/
-    │       └── SampleBasicInformationContainer.tsx
-    └── register/
-        └── ui/
-            └── SampleRegisterContainer.tsx
-```
-
-### ui-blockとは
-
-- **目的**: UIブロックごとに `lib`、`model`、`config` を閉じ込め、対応関係を明確にする
-- **Container**: `ui/` には `XxxxContainer.tsx` を配置してよい
-- **依存**: `widgets/` や `shared/` からの import は自由に行ってよい
-- **スライス内分離**: 各 ui-block 内に `model/` や `lib/` を持たせ、責務を局所化する
-- **注意**: ui-block は「整理手段」であり、「widgets や shared の使用制限」ではない
-
-### 命名ルール
-
-| 種類 | 命名パターン | 例 |
-|------|-------------|-----|
-| メインコンテナ | `XxxxContainer` | `ItemMasterContainer` |
-| ui-block名 | kebab-case | `table-view`, `dashboard-panel` |
-| 分離コンポーネント | `XxxxPanel` | `ItemDetailPanel` |
-| 明確な役割がある場合 | `XxxxHeader`, `XxxxTable` | `AllocateTable` |
-| 細かいコンポーネント | `ui-block/[block]/ui/components/` 内に配置 | `SourceTagPopover` |
-| Widgetsのメイン | `XxxxWidget` | `TableViewWidget` |
+短時間で単体画面のデザイン検証をしたい時だけ、`design-test/page.tsx` に全部書いてよい。
 
 ---
 
-## 2. バックエンド接続を見据えた実装
+## 5. page-components 層のルール
+
+### 基本構造
+
+```txt
+page-components/
+└── news-detail/
+    ├── ui/
+    │   └── NewsDetailContainer.tsx
+    ├── ui-block/
+    │   ├── story-cards/
+    │   │   ├── ui/
+    │   │   │   ├── StoryCardsSection.tsx
+    │   │   │   ├── components/
+    │   │   │   │   └── StoryCard.tsx
+    │   │   │   └── skeleton/
+    │   │   │       └── StoryCardsSkeleton.tsx
+    │   │   ├── model/
+    │   │   │   └── types.ts
+    │   │   ├── lib/
+    │   │   └── config/
+    │   ├── glossary-popover/
+    │   └── recommendation/
+    ├── dummy-data/
+    │   └── news.ts
+    └── model/
+        └── types.ts
+```
+
+### ui-block とは
+
+- ページ内の UI ブロック単位で責務を分ける整理手段
+- そのブロック専用の `model`、`lib`、`config` を閉じ込める
+- `widgets/` や `shared/` を使うこと自体は制限しない
+
+### 命名ルール
+
+| 種類                  | 命名                  |
+| --------------------- | --------------------- |
+| メインコンテナ        | `XxxxContainer.tsx`   |
+| ui-block ディレクトリ | kebab-case            |
+| セクション UI         | `XxxxSection.tsx`     |
+| パネル系 UI           | `XxxxPanel.tsx`       |
+| 細かい部品            | `ui/components/` 配下 |
+| Skeleton              | `XxxxSkeleton.tsx`    |
+
+---
+
+## 6. shadcn/ui 利用ルール
+
+### 正式な import 先
+
+- `@/shared/ui/shadcn/ui/...`
+- `@/shared/ui/shadcn/lib/...`
+
+### 例
+
+```tsx
+import { Button } from "@/shared/ui/shadcn/ui/button";
+import { Card } from "@/shared/ui/shadcn/ui/card";
+import { Skeleton } from "@/shared/ui/shadcn/ui/skeleton";
+import { cn } from "@/shared/ui/shadcn/lib/utils";
+```
+
+### 禁止
+
+- `@/components/ui/...` から新規 import しない
+- `@/lib/utils` から新規 import しない
+- バレルファイル `index.ts` を作らない
+
+### 使い分け
+
+- shadcn/ui: Button, Card, Dialog, Popover, Tabs, Tooltip などのプリミティブ
+- shared 独自 UI: EmptyState, NewsChip, ImpactBadge などアプリ固有の見た目
+- page-components / widgets 内 UI: 画面意味を持つまとまり
+
+---
+
+## 7. UI 実装ルール
+
+### 基本
+
+- shadcn/ui をベースに組む
+- アイコンは `lucide-react`
+- 生の `<svg>` は原則書かない
+- ボタンは `icon + text` を優先する
+- チャートは `recharts`
+- 通知プレビューやカード送りは「遊び」を入れてよいが、理解を邪魔しない
+
+### レイアウト
+
+- 全体は `h-screen` または `min-h-screen` を基準にする
+- スクロール責務は明確に分ける
+- `flex min-h-0 flex-1` を意識する
+- PC でも狭めの情報幅を使い、「読みやすさ」を優先してよい
+- ただし押しやすい余白は削らない
+
+### 画面づくりで大事なこと
+
+- 1 画面に情報を詰め込みすぎない
+- 1 カード 1 メッセージ
+- 難しい情報は必ず噛み砕く
+- 「次を読みたい」導線を作る
+- 保存・関連ニュース・語句説明は補助であり、主役は 3 カード体験
+
+---
+
+## 8. じじいにゅーす固有のデザイン指針
+
+### 8-1. 通知 UI
+
+- 最もフックが強い場所
+- 少し笑えるが、不快ではない文体にする
+- 絵文字は使ってよいが多すぎない
+- 一目でニューステーマがわかる構成にする
+
+### 8-2. 3 カードニュース
+
+- 1 枚目: 何が起きた
+- 2 枚目: なぜ起きた
+- 3 枚目: 私生活への影響
+
+### 8-3. 専門用語
+
+- 長文説明は禁止
+- 1 秒でわかる短文
+- ポップアップは軽く、閉じやすく
+
+### 8-4. 関連ニュース
+
+- 多く出しすぎない
+- 1〜2 本に絞る
+- タイトルだけで意味がつながるようにする
+
+### 8-5. 今日のニュース一覧
+
+- 数は 3 本を基本
+- 情報量より選びやすさ
+- 一覧なのに一覧感を出しすぎない
+
+---
+
+## 9. バックエンド接続前の実装ルール
 
 ### やること
 
-- UI状態のみフロントで管理する
-- 例: `currentPage`, `filterState`, `sortState`, `selectedTab`, `dialogOpen`
-- アクション実行時は `alert()` で未実装を表現してよい
-- 例: `alert("ユーザーを削除（未実装）")`
-- API接続前提の箇所には `// TODO: API呼び出し` を残す
+- UI 状態のみフロントで持つ
+- 例: `currentCard`, `selectedNewsId`, `selectedTerm`, `isSaved`, `dialogOpen`
+- 接続前のアクションは `alert()` でよい
+- API 接続予定箇所に `// TODO: API呼び出し` を残す
 
 ### やらないこと
 
-- フロントでの本実装のフィルター・ソート
-- 接続時に消える前提の複雑な整形ロジック
-- 仮実装のためだけの過剰な state 管理
+- 本番前提のデータ整形ロジックを作り込みすぎる
+- 接続後に消える重い状態管理を入れる
+- ダミー実装のためだけに過剰な hooks を増やす
 
 ### どうしても必要な場合
 
-```typescript
+```ts
 // 今後消す==========================================
-const filteredData = data.filter((item) => item.name.includes(searchQuery));
+const visibleNews = data.filter((item) => item.category === activeCategory);
 // =================================================
 ```
 
 ---
 
-## 3. ダミーデータ
+## 10. ダミーデータ
 
 ### 配置
 
-`slice/dummy-data/` 内に作成する。`ui/` と同じ階層に置く。
+- `slice/dummy-data/` に置く
+- `ui/` と同階層
 
 ### ルール
 
-- **型定義も同じファイルに書く**
-- 後で entity の型と混ざらないようにする
-- APIレスポンス仕様がある場合は、その形に寄せる
-- 接続後に消す前提であることを意識する
+- 型定義も同じファイルに書く
+- API レスポンスを見据えた shape に寄せる
+- 後で削除しやすい粒度にする
 
-```typescript
-// frontend/src/page-components/sample/home/dummy-data/samples.ts
+### 例
 
-export interface SampleItem {
-  id: number;
-  name: string;
-  email: string;
+```ts
+// frontend/src/page-components/news-detail/dummy-data/news.ts
+
+export interface DemoNewsCard {
+  id: string;
+  title: string;
+  summary: string;
+  reason: string;
+  impact: string[];
 }
 
-export const dummySamples: SampleItem[] = [
-  { id: 1, name: "山田太郎", email: "yamada@example.com" },
+export const demoNewsCards: DemoNewsCard[] = [
+  {
+    id: "yen-weak-001",
+    title: "円安が進んでいます",
+    summary: "円の価値が下がり、海外の商品が高くなっています。",
+    reason: "アメリカと日本の金利差が大きいことが背景です。",
+    impact: ["iPhone が高くなる", "海外旅行の費用が上がる"],
+  },
 ];
 ```
 
 ---
 
-## 4. 型定義の配置
+## 11. 型定義の置き場所
 
-| 状況 | 配置場所 |
-|------|----------|
-| ダミーデータ用で後で消える | `slice/dummy-data/xxx.ts` 内 |
-| ui-block専用で接続後も残る | `ui-block/[block]/model/types.ts` |
-| ページ全体で共有する | `slice/model/types.ts` |
-| 複数 slice や widgets で再利用する | `frontend/src/shared/types/` |
-| ドメインとして安定している | `frontend/src/entities/**/model/` |
-
----
-
-## 5. ローディング表示
-
-- shadcn/ui の `Skeleton` を使う
-- 配置は原則 `slice/ui-block/[block]/ui/skeleton/` または `slice/ui/skeleton/`
-- 実際にローディングが発生する箇所にだけ作る
-- 見た目確認だけのために全画面 skeleton を乱立させない
-
-```tsx
-import { Skeleton } from "@/shared/ui/shadcn/ui/skeleton";
-
-export function SampleTableSkeleton() {
-  return (
-    <div className="space-y-2">
-      <Skeleton className="h-10 w-full" />
-      <Skeleton className="h-10 w-full" />
-      <Skeleton className="h-10 w-full" />
-    </div>
-  );
-}
-```
+| 状況                         | 配置場所                          |
+| ---------------------------- | --------------------------------- |
+| ダミーデータ専用で後で消える | `slice/dummy-data/*.ts` 内        |
+| ui-block 専用                | `ui-block/[block]/model/types.ts` |
+| ページ全体で共有             | `slice/model/types.ts`            |
+| 複数画面で使う軽い型         | `shared/types/`                   |
+| ドメインとして安定している   | `entities/**/model/`              |
 
 ---
 
-## 6. UI実装ルール
+## 12. ローディングと空状態
 
-### 基本
+### ローディング
 
-- **shadcn/ui** をベースに作る
-- 配置は `frontend/src/shared/ui/shadcn/ui/`
-- アイコンは **lucide-react** を使う
-- `<svg>` の直書きは避ける
-- ボタンは **icon + text** を積極的に使う
-- グラフやチャートは **recharts** を使う
-- Dialog を使う場合、`DialogTrigger` と `DialogContent` は同じコンポーネントにまとめる
-- Dialog の open 状態はそのコンポーネント内部で管理する
-- ラベル付きインプットは `frontend/src/shared/ui/form-fields/ui/` に置く
-- パターンがなければそこへ追加する
-- データ空状態は `frontend/src/shared/ui/components/empty-design/` から使う
-- 削除確認ダイアログは `frontend/src/shared/ui/components/delete-confirm-dialog/` を使う
+- `Skeleton` は `@/shared/ui/shadcn/ui/skeleton` を使う
+- 実際に待ち時間が発生する場所にだけ置く
+- 「とりあえず全画面 skeleton」は避ける
 
-### shadcn/ui と独自UIの切り分け
+### 空状態
 
-- shadcn/ui:
-  `Button`, `Input`, `Dialog`, `Sheet`, `Skeleton`, `Table`, `Badge` など再利用前提の低レイヤー
-- shared/ui/components:
-  `AppEmptyState`, `SectionHeader`, `DeleteConfirmDialog` など意味を持つ共通UI
-- page-components/ui-block:
-  画面専用の UI ブロック
-
-### レイアウト
-
-- 全体は `h-screen` を基本とする
-- `flex min-h-0 flex-1` で高さ制約を子に渡す
-- スクロール箇所は明示する
-- 横幅は `w-full` を基本にする
-- `max-w-7xl mx-auto` のような中央寄せ固定は原則避ける
-
-```tsx
-<div className="flex h-screen flex-col">
-  <Header />
-  <main className="flex min-h-0 flex-1 flex-col">
-    <Content className="flex-1 overflow-auto" />
-  </main>
-</div>
-```
-
-### サイドバー・ヘッダー
-
-- アプリ全体で使うものは `widgets/` に配置する
-- 画面固有のヘッダーなら `page-components/.../ui-block/header/` に置く
+- データがない時は何も表示しないのは禁止
+- 保存記事ゼロ、関連ニュースなし、今日のニュース未配信など、空状態をちゃんと設計する
+- 将来的に `shared/ui/components/empty-state/` を作って再利用する
 
 ---
 
-## 7. import ルール
+## 13. 禁止事項
 
-- バレルファイル `index.ts` による公開APIは作らない
-- 直接ファイルパスで import する
-- import alias は `@/` を使ってよい
-- 例:
-  `@/page-components/sample/home/ui/SampleHomeContainer`
-  `@/shared/ui/shadcn/ui/button`
-
----
-
-## 8. 禁止事項
-
-- **バレルファイル（index.ts）による公開API**
-- フロントだけで完結する前提の重い業務ロジック実装
-- まだ要件が固まっていない段階で `features/` や `entities/` を過剰分割すること
-- デザイン確認用ページに本番前提の複雑な責務を背負わせること
-- App Router の `page.tsx` に直接大量の UI ブロックやロジックを書くこと
+- `index.ts` による公開 API
+- 新規コードで `@/components/ui/*` を使うこと
+- 新規コードで `@/lib/utils` を使うこと
+- 1 画面に情報を詰め込みすぎること
+- ニュース本文を長文記事 UI にしてしまうこと
+- 「理解しやすさ」より「ニュースアプリっぽさ」を優先すること
 
 ---
 
-## 9. 実装時の判断基準
+## 14. デザイン作業時の出力ルール
 
-- まず `src/app` を薄く保てるか確認する
-- 再利用されるか不明なものは、いったん `page-components` に置く
-- 複数画面で使うと確定したら `widgets/` や `shared/` へ引き上げる
-- shadcn/ui はベース部品置き場であり、業務意味を持つコンポーネント置き場ではない
-- 「後で消える仮実装」と「残る型・UI」を分けて置く
+このプロンプトを読んだ後は、以下を守ること。
 
----
-
-これらのルールに従ってデモUIを作成してください。
-不明点があれば質問してください。
+- まず現在の `frontend/src` 構成を確認する
+- 新規 UI は既存の shadcn 配置に合わせる
+- import は直接ファイルパスで書く
+- 必要なら route より先に `page-components` と `widgets` の責務を整理してから実装する
+- デザイン提案では、必ず「誰が」「どの画面で」「何を理解できるようになるか」を意識する
 
 ---
 
-## 読み込み完了後の返信
+## 15. 読み込み完了後の返信
 
-以下のように返信してください：
+以下の形式で返答すること。
 
 ```txt
 ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
   ▄██▄
- ██◉◉██   FSD Design System v1 — Loaded
- ▀████▀   最高のプロダクトを作りましょう。
+ ██◉◉██   Jijii News Design Init v1 — Loaded
+ ▀████▀   気になるニュースの入口を設計します。
  ▄█▀▀█▄   何からデザインしますか？
 ▀▀ ▀▀ ▀▀
 ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
