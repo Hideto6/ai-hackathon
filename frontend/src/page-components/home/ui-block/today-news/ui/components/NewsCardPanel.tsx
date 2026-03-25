@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -26,6 +27,7 @@ interface NewsCardPanelProps {
 export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
   const [isSaved, setIsSaved] = useState(article.isSaved ?? false);
   const theme = newsCategoryTheme[article.category];
+  const thumbnailImageUrl = article.thumbnail?.imageUrl;
   const thumbnailText =
     article.thumbnail?.placeholderText ?? "画像を配置してください";
 
@@ -34,9 +36,21 @@ export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
       <div className={cn("absolute inset-y-0 left-0 w-1.5", theme.lineClassName)} />
       <CardContent className="pt-0">
         <div className="overflow-hidden rounded-xl border border-dashed border-border bg-muted/40">
-          <div className="grid aspect-[16/9] place-items-center px-4 text-center text-sm text-muted-foreground">
-            {thumbnailText}
-          </div>
+          {thumbnailImageUrl ? (
+            <div className="relative aspect-[16/9]">
+              <Image
+                src={thumbnailImageUrl}
+                alt={article.thumbnail.alt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+            </div>
+          ) : (
+            <div className="grid aspect-[16/9] place-items-center px-4 text-center text-sm text-muted-foreground">
+              {thumbnailText}
+            </div>
+          )}
         </div>
       </CardContent>
       <CardHeader className="gap-3 pt-0">
