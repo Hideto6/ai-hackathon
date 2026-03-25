@@ -29,15 +29,30 @@ export function StoryCardsSection({
   const goPrev = () => {
     setCurrentCardIndex((current) => {
       const next = Math.max(current - 1, 0);
-      onCompletionChange(next === article.cards.length - 1);
+      onCompletionChange(false);
       return next;
     });
   };
 
+  const completeStory = (direction: "left" | "right") => {
+    setIsDragging(false);
+    setDragX(direction === "right" ? 420 : -420);
+
+    window.setTimeout(() => {
+      onCompletionChange(true);
+      resetDrag();
+    }, 180);
+  };
+
   const goNext = () => {
+    if (isLastCard) {
+      completeStory("left");
+      return;
+    }
+
     setCurrentCardIndex((current) => {
       const next = Math.min(current + 1, article.cards.length - 1);
-      onCompletionChange(next === article.cards.length - 1);
+      onCompletionChange(false);
       return next;
     });
   };
@@ -50,7 +65,7 @@ export function StoryCardsSection({
 
   const finishSwipe = (direction: "left" | "right") => {
     if (isLastCard) {
-      resetDrag();
+      completeStory(direction);
       return;
     }
 
