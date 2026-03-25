@@ -50,6 +50,10 @@ export function HomeContainer() {
       return enabled;
     }
 
+    if (selectedCategory === "保存済み") {
+      return homeDemoNewsItems.filter((article) => article.isSaved);
+    }
+
     return enabled.filter((article) => article.category === selectedCategory);
   }, [enabledCategories, selectedCategory]);
 
@@ -98,7 +102,8 @@ export function HomeContainer() {
             enabledCategories={enabledCategories}
             notificationCategories={notificationCategories}
             selectableCategories={homeCategories.filter(
-              (category): category is NewsCategory => category !== "すべて",
+              (category): category is NewsCategory =>
+                category !== "すべて" && category !== "保存済み"
             )}
             onToggleCategory={handleToggleCategory}
             onToggleNotificationCategory={handleToggleNotificationCategory}

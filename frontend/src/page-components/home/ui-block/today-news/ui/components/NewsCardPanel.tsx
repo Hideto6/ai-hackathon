@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { newsCategoryTheme } from "@/entities/news/model/category-theme";
 import type { NewsEntity } from "@/entities/news/model/types";
-import { ArrowRight, Bookmark } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import { Badge } from "@/shared/ui/shadcn/ui/badge";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/shadcn/ui/card";

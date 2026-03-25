@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import type { GlossaryTermEntity } from "@/entities/glossary-term/model/types";
 import { getNewsDetailModel } from "@/page-components/news-detail/dummy-data/news";
+import { setHomeNewsSaved } from "@/page-components/home/dummy-data/news";
 import { GlossaryPopoverSection } from "@/page-components/news-detail/ui-block/glossary-popover/ui/GlossaryPopoverSection";
 import { RecommendationSection } from "@/page-components/news-detail/ui-block/recommendation/ui/RecommendationSection";
 import { StoryCardsSkeleton } from "@/page-components/news-detail/ui-block/story-cards/skeleton/StoryCardsSkeleton";
@@ -74,10 +75,18 @@ export function NewsDetailContainer() {
             type="button"
             variant="ghost"
             size="icon"
-            onClick={() => setIsSaved((current) => !current)}
+            onClick={() => {
+              setIsSaved((current) => {
+                const next = !current;
+                setHomeNewsSaved(params.newsId, next);
+                return next;
+              });
+            }}
             className="rounded-full"
           >
-            <Bookmark className={isSaved ? "fill-current" : ""} />
+            <Bookmark
+              className={isSaved ? "fill-amber-500 text-amber-500" : "text-muted-foreground"}
+            />
             <span className="sr-only">{isSaved ? "保存済み" : "保存する"}</span>
           </Button>
         </div>
@@ -101,8 +110,8 @@ export function NewsDetailContainer() {
             <div
               className={
                 showRecommendations
-                  ? "absolute inset-x-4 top-[72px] bottom-10 flex items-center justify-center"
-                  : "pointer-events-none absolute inset-x-4 top-[72px] bottom-10 flex items-center justify-center"
+                  ? "absolute inset-x-0 top-4 bottom-10 flex items-center justify-center"
+                  : "pointer-events-none absolute inset-x-0 top-4 bottom-10 flex items-center justify-center"
               }
             >
               <RecommendationSection

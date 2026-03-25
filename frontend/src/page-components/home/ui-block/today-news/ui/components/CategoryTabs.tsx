@@ -30,17 +30,24 @@ export function CategoryTabs({
     }
   }, [selectedCategory]);
 
+  const orderedCategories = [
+    ...categories.filter((category) => category !== "保存済み"),
+    ...categories.filter((category) => category === "保存済み"),
+  ];
+
   return (
     <div
       ref={scrollRef}
       className="flex gap-2 overflow-x-auto border-b px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
-      {categories.map((category) => {
+      {orderedCategories.map((category) => {
         const isSelected = category === selectedCategory;
         const selectedClassName =
           category === "すべて"
             ? "border-foreground bg-foreground text-background"
-            : newsCategoryTheme[category].badgeClassName;
+            : category === "保存済み"
+              ? "border-amber-300 bg-amber-100 text-amber-800"
+              : newsCategoryTheme[category].badgeClassName;
 
         return (
           <button
