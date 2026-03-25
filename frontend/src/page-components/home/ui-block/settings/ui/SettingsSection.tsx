@@ -71,9 +71,6 @@ export function SettingsSection({
           })}
         </CardContent>
       </Card>
-      <p className="px-1 pt-3 text-xs leading-5 text-muted-foreground">
-        表示・通知ともに、最低1カテゴリは残すようにしています。
-      </p>
     </section>
   );
 }
