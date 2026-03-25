@@ -4,8 +4,6 @@ import { useState } from "react";
 import type { ReactNode } from "react";
 import { newsCategoryTheme } from "@/entities/news/model/category-theme";
 import type { GlossaryTermEntity } from "@/entities/glossary-term/model/types";
-import type { NewsStoryCard } from "@/entities/news/model";
-import { glossaryTerms } from "@/entities/glossary-term/model/data";
 import type { StoryCardsSectionProps } from "@/page-components/news-detail/model/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -114,10 +112,10 @@ export function StoryCardsSection({
   };
 
   const renderBody = (
-    body: string
+    body: string,
+    terms: GlossaryTermEntity[] | undefined
   ) => {
-    const terms = glossaryTerms.filter((t: GlossaryTermEntity) => body.includes(t.term));
-    if (!terms.length) {
+    if (!terms?.length) {
       return <p>{body}</p>;
     }
 
