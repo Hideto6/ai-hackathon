@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
+import { newsCategoryTheme } from "@/entities/news/model/category-theme";
 import type { HomeCategory } from "@/page-components/home/model/types";
 import { cn } from "@/shared/ui/shadcn/lib/utils";
 
@@ -36,6 +37,10 @@ export function CategoryTabs({
     >
       {categories.map((category) => {
         const isSelected = category === selectedCategory;
+        const selectedClassName =
+          category === "すべて"
+            ? "border-foreground bg-foreground text-background"
+            : newsCategoryTheme[category].badgeClassName;
 
         return (
           <button
@@ -45,7 +50,7 @@ export function CategoryTabs({
             className={cn(
               "shrink-0 rounded-full border px-3 py-1.5 text-sm transition-colors",
               isSelected
-                ? "border-foreground bg-foreground text-background"
+                ? selectedClassName
                 : "border-border bg-background text-muted-foreground hover:text-foreground"
             )}
           >
