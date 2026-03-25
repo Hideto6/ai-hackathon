@@ -33,8 +33,13 @@ export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
 
   return (
     <Card className="relative gap-3 overflow-hidden transition-transform duration-150 hover:-translate-y-0.5">
+      <Link
+        href={`/news/${article.id}`}
+        aria-label={`${article.headline} を開く`}
+        className="absolute inset-0 z-10 rounded-[inherit]"
+      />
       <div className={cn("absolute inset-y-0 left-0 w-1.5", theme.lineClassName)} />
-      <CardContent className="pt-0">
+      <CardContent className="pointer-events-none pt-0">
         <div className="overflow-hidden rounded-xl border border-dashed border-border bg-muted/40">
           {thumbnailImageUrl ? (
             <div className="relative aspect-[16/9]">
@@ -53,7 +58,7 @@ export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
           )}
         </div>
       </CardContent>
-      <CardHeader className="gap-3 pt-0">
+      <CardHeader className="pointer-events-none gap-3 pt-0">
         <div className="flex items-center justify-between gap-3">
           <Badge variant="outline" className={theme.badgeClassName}>
             {article.category}
@@ -65,13 +70,15 @@ export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
         </CardTitle>
       </CardHeader>
 
-      <CardFooter className="justify-between gap-2 py-3">
+      <CardFooter className="relative z-20 justify-between gap-2 py-3">
         <Button
           type="button"
           variant="ghost"
           size="icon"
-          className={cn(isSaved && "text-blue-600")}
-          onClick={() => {
+          className={cn("pointer-events-auto", isSaved && "text-blue-600")}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
             const next = !isSaved;
             setIsSaved(next);
             onToggleSaved(article.id, next);
@@ -80,13 +87,10 @@ export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
           <Bookmark className={cn("size-4", isSaved && "fill-blue-600 text-blue-600")} />
           <span className="sr-only">{isSaved ? "保存済み" : "保存する"}</span>
         </Button>
-        <Link
-          href={`/news/${article.id}`}
-          className="flex items-center gap-1 text-sm font-medium text-foreground"
-        >
+        <span className="pointer-events-none flex items-center gap-1 text-sm font-medium text-foreground">
           開く
           <ArrowRight className="size-4" />
-        </Link>
+        </span>
       </CardFooter>
     </Card>
   );
