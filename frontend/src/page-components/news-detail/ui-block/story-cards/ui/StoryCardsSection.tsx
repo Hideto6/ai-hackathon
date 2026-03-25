@@ -195,8 +195,6 @@ export function StoryCardsSection({
             const isTopCard = stackIndex === 0;
             const stackOffset = stackIndex * 12;
             const stackScale = 1 - stackIndex * 0.04;
-            const overlayOpacity = Math.min(Math.abs(dragX) / 120, 1);
-
             return (
               <Card
                 key={`${card.label}-${currentCardIndex + stackIndex}`}
@@ -246,23 +244,6 @@ export function StoryCardsSection({
                 onTouchEnd={isTopCard ? handleDragEnd : undefined}
                 onTouchCancel={isTopCard ? resetDrag : undefined}
               >
-                {isTopCard ? (
-                  <>
-                    <div
-                      className="pointer-events-none absolute left-4 top-4 rounded-md border border-emerald-500 px-3 py-1 text-xl font-bold text-emerald-500"
-                      style={{ opacity: dragX > 0 ? overlayOpacity : 0 }}
-                    >
-                      なるほど
-                    </div>
-                    <div
-                      className="pointer-events-none absolute right-4 top-4 rounded-md border border-rose-500 px-3 py-1 text-xl font-bold text-rose-500"
-                      style={{ opacity: dragX < 0 ? overlayOpacity : 0 }}
-                    >
-                      つぎへ
-                    </div>
-                  </>
-                ) : null}
-
                 <CardHeader className="gap-3 pt-6">
                   <p className="text-sm text-muted-foreground">{card.label}</p>
                   <CardTitle className="text-[1.9rem] leading-tight">
@@ -272,14 +253,6 @@ export function StoryCardsSection({
 
                 <CardContent className="pb-0 text-lg leading-8 text-muted-foreground">
                   {renderBody(card.body, card.highlightedTerms)}
-                </CardContent>
-
-                <CardContent className="pt-0 text-xs text-muted-foreground">
-                  {isTopCard
-                    ? isLastCard
-                      ? "最後のカードです。もう一度めくると次のニュースへ進みます"
-                      : "左右にスワイプしてカードを捲れます"
-                    : "次に見えるカード"}
                 </CardContent>
               </Card>
             );
