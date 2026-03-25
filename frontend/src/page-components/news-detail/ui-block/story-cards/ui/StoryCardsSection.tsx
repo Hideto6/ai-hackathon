@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 
+import { newsCategoryTheme } from "@/entities/news/model/category-theme";
 import type { GlossaryTermEntity } from "@/entities/glossary-term/model/types";
 import type { StoryCardsSectionProps } from "@/page-components/news-detail/model/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -25,6 +26,7 @@ export function StoryCardsSection({
   const isFirstCard = currentCardIndex === 0;
   const isLastCard = currentCardIndex === article.cards.length - 1;
   const visibleCards = article.cards.slice(currentCardIndex, currentCardIndex + 3);
+  const theme = newsCategoryTheme[article.category];
 
   const goPrev = () => {
     setCurrentCardIndex((current) => {
@@ -170,7 +172,9 @@ export function StoryCardsSection({
         ))}
       </div>
       <div className="flex items-center justify-between gap-3">
-        <Badge variant="outline">{article.category}</Badge>
+        <Badge variant="outline" className={theme.badgeClassName}>
+          {article.category}
+        </Badge>
         <span className="text-xs text-muted-foreground">{article.timestamp}</span>
       </div>
       <div className="relative mx-auto h-[500px] w-full max-w-[360px]">
