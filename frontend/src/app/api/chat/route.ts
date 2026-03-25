@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 export async function POST(request: NextRequest) {
-  if (!ANTHROPIC_API_KEY) {
+  if (!GEMINI_API_KEY) {
     return NextResponse.json(
-      { error: "ANTHROPIC_API_KEY is not set" },
+      { error: "GEMINI_API_KEY is not set" },
       { status: 500 }
     );
   }
@@ -13,38 +14,26 @@ export async function POST(request: NextRequest) {
   try {
     const { messages, systemPrompt } = await request.json();
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-3-5-sonnet-20240620",
-        max_tokens: 1024,
-        system: systemPrompt,
-        messages: messages.map((m: { role: string; content: string }) => ({
-          role: m.role,
-          content: m.content,
-        })),
-      }),
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      systemInstruction: systemPrompt,
     });
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error("Claude API error:", errorData);
-      return NextResponse.json(
-        { error: "Claude API request failed" },
-        { status: response.status }
-      );
-    }
+    // Build conversation history for Gemini format
+    const history = messages.slice(0, -1).map((m: { role: string; content: string }) => ({
+      role: m.role === "assistant" ? "model" : "user",
+      parts: [{ text: m.content }],
+    }));
 
-    const data = await response.json();
-    const assistantMessage =
-      data.content?.[0]?.text ?? "すまんネ、ちょっと調子悪いみたいだヨ😅💦";
+    const lastMessage = messages[messages.length - 1];
 
-    return NextResponse.json({ message: assistantMessage });
+    const chat = model.startChat({ history });
+    const result = await chat.sendMessage(lastMessage.content);
+    const responseText =
+      result.response.text() ?? "ごめんﾖ😅おぢさん、今ちょっと調子悪いみたいﾀﾞﾈ💦 もう一回聞いてみてﾖ❗";
+
+    return NextResponse.json({ message: responseText });
   } catch (error) {
     console.error("Chat API error:", error);
     return NextResponse.json(
