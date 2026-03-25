@@ -3,8 +3,12 @@
 import { useMemo, useState } from "react";
 
 import type { NewsCategory } from "@/entities/news/model/types";
+import { useSavedNews } from "@/features/save-news/model/useSavedNews";
 import type { HomeCategory, HomeTab } from "@/page-components/home/model/types";
-import { homeCategories, homeDemoNewsItems } from "@/page-components/home/dummy-data/news";
+import {
+  homeCategories,
+  homeDemoNewsItems,
+} from "@/page-components/home/dummy-data/news";
 import { HeroSection } from "@/page-components/home/ui-block/hero/ui/HeroSection";
 import { NotificationPreviewSection } from "@/page-components/home/ui-block/notification-preview/ui/NotificationPreviewSection";
 import { SettingsSection } from "@/page-components/home/ui-block/settings/ui/SettingsSection";
@@ -21,21 +25,28 @@ const defaultEnabledCategories: NewsCategory[] = [
 
 export function HomeContainer() {
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
-  const [selectedCategory, setSelectedCategory] = useState<HomeCategory>("すべて");
-  const [enabledCategories, setEnabledCategories] =
-    useState<NewsCategory[]>(defaultEnabledCategories);
+  const [selectedCategory, setSelectedCategory] =
+    useState<HomeCategory>("すべて");
+  const [enabledCategories, setEnabledCategories] = useState<NewsCategory[]>(
+    defaultEnabledCategories,
+  );
+  const { isSaved } = useSavedNews();
 
   const visibleArticles = useMemo(() => {
     const enabled = homeDemoNewsItems.filter((article) =>
-      enabledCategories.includes(article.category)
+      enabledCategories.includes(article.category),
     );
 
-    if (selectedCategory === "すべて") {
-      return enabled;
-    }
+    const baseArticles =
+      selectedCategory === "すべて"
+        ? enabled
+        : enabled.filter((article) => article.category === selectedCategory);
 
-    return enabled.filter((article) => article.category === selectedCategory);
-  }, [enabledCategories, selectedCategory]);
+    return baseArticles.map((article) => ({
+      ...article,
+      isSaved: isSaved(article.id),
+    }));
+  }, [enabledCategories, isSaved, selectedCategory]);
 
   const handleToggleCategory = (category: NewsCategory) => {
     setEnabledCategories((current) => {
@@ -49,7 +60,18 @@ export function HomeContainer() {
     });
   };
 
-  const featuredArticle = visibleArticles[0] ?? homeDemoNewsItems[0];
+  const featuredArticle =
+    visibleArticles[0] ??
+    (homeDemoNewsItems[0]
+      ? {
+          ...homeDemoNewsItems[0],
+          isSaved: isSaved(homeDemoNewsItems[0].id),
+        }
+      : undefined);
+
+  if (!featuredArticle) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -69,7 +91,7 @@ export function HomeContainer() {
           <SettingsSection
             enabledCategories={enabledCategories}
             selectableCategories={homeCategories.filter(
-              (category): category is NewsCategory => category !== "すべて"
+              (category): category is NewsCategory => category !== "すべて",
             )}
             onToggleCategory={handleToggleCategory}
           />

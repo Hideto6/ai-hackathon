@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import type { GlossaryTermEntity } from "@/entities/glossary-term/model/types";
+import { useSavedNews } from "@/features/save-news/model/useSavedNews";
 import { getNewsDetailModel } from "@/page-components/news-detail/dummy-data/news";
 import { GlossaryPopoverSection } from "@/page-components/news-detail/ui-block/glossary-popover/ui/GlossaryPopoverSection";
 import { RecommendationSection } from "@/page-components/news-detail/ui-block/recommendation/ui/RecommendationSection";
@@ -18,14 +19,21 @@ import { Button } from "@/shared/ui/shadcn/ui/button";
 export function NewsDetailContainer() {
   const router = useRouter();
   const params = useParams<{ newsId: string }>();
-  const [selectedTerm, setSelectedTerm] = useState<GlossaryTermEntity | null>(null);
-  const detail = useMemo(() => getNewsDetailModel(params.newsId), [params.newsId]);
-  const [isSaved, setIsSaved] = useState(detail?.article.isSaved ?? false);
+  const [selectedTerm, setSelectedTerm] = useState<GlossaryTermEntity | null>(
+    null,
+  );
+  const detail = useMemo(
+    () => getNewsDetailModel(params.newsId),
+    [params.newsId],
+  );
+  const { isSaved, toggleSaved } = useSavedNews();
 
   if (!detail) {
     return (
       <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-4 px-4">
-        <p className="text-lg font-semibold">ニュースが見つかりませんでした。</p>
+        <p className="text-lg font-semibold">
+          ニュースが見つかりませんでした。
+        </p>
         <p className="text-sm text-muted-foreground">
           ダミーデータに存在しないため、一覧へ戻してください。
         </p>
@@ -38,7 +46,11 @@ export function NewsDetailContainer() {
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background px-4 py-4">
         <div className="mb-4">
-          <Button variant="ghost" className="px-0" onClick={() => router.back()}>
+          <Button
+            variant="ghost"
+            className="px-0"
+            onClick={() => router.back()}
+          >
             <ArrowLeft className="size-4" />
             戻る
           </Button>
@@ -52,8 +64,8 @@ export function NewsDetailContainer() {
               onSelectTerm={setSelectedTerm}
             />
             <SaveActionSection
-              isSaved={isSaved}
-              onToggleSaved={() => setIsSaved((current) => !current)}
+              isSaved={isSaved(detail.article.id)}
+              onToggleSaved={() => toggleSaved(detail.article.id)}
             />
             <RecommendationSection articles={detail.recommendations} />
           </div>
