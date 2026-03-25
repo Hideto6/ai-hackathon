@@ -7,13 +7,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/shadcn/ui/
 
 interface RecommendationSectionProps {
   articles: NewsEntity[];
+  visible: boolean;
 }
 
 export function RecommendationSection({
   articles,
+  visible,
 }: RecommendationSectionProps) {
   return (
-    <section className="space-y-3">
+    <section
+      className={
+        visible
+          ? "mx-auto flex w-full max-w-[360px] flex-col justify-center space-y-4 translate-y-0 opacity-100 transition-all duration-500 ease-out"
+          : "pointer-events-none mx-auto flex w-full max-w-[360px] flex-col justify-center space-y-4 translate-y-4 opacity-0 transition-all duration-300 ease-out"
+      }
+    >
       <div className="space-y-1">
         <h2 className="text-sm font-semibold">関連して気にしたいニュース</h2>
         <p className="text-sm text-muted-foreground">
