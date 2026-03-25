@@ -28,26 +28,6 @@ async function getServiceWorkerRegistration() {
   return navigator.serviceWorker.register("/sw.js");
 }
 
-function isIosDevice() {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  const userAgent = window.navigator.userAgent;
-  return /iPhone|iPad|iPod/i.test(userAgent);
-}
-
-function isStandaloneDisplayMode() {
-  if (typeof window === "undefined") {
-    return false;
-  }
-
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    (window.navigator as Navigator & { standalone?: boolean }).standalone === true
-  );
-}
-
 interface PushNotificationSectionProps {
   sampleTitle: string;
 }
@@ -59,7 +39,6 @@ export function PushNotificationSection({
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [permission, setPermission] = useState<NotificationPermission>("default");
   const [isBusy, setIsBusy] = useState(false);
-  const [needsIosStandalone, setNeedsIosStandalone] = useState(false);
 
   useEffect(() => {
     const supported =
@@ -75,7 +54,6 @@ export function PushNotificationSection({
     }
 
     setPermission(Notification.permission);
-    setNeedsIosStandalone(isIosDevice() && !isStandaloneDisplayMode());
 
     void getServiceWorkerRegistration().then(async (registration) => {
       const subscription = await registration.pushManager.getSubscription();
@@ -85,13 +63,6 @@ export function PushNotificationSection({
 
   const handleEnable = async () => {
     try {
-      if (needsIosStandalone) {
-        toast.error("iPhoneはホーム画面から開いた時だけ通知を許可できます", {
-          description: "Safariの共有メニューから「ホーム画面に追加」して、そのアイコンから開いてください。",
-        });
-        return;
-      }
-
       setIsBusy(true);
 
       const nextPermission = await Notification.requestPermission();
@@ -233,11 +204,6 @@ export function PushNotificationSection({
         <div className="rounded-lg border bg-muted/30 px-3 py-2 text-sm text-muted-foreground">
           権限: {permission === "granted" ? "許可済み" : permission === "denied" ? "拒否" : "未選択"}
         </div>
-        {needsIosStandalone ? (
-          <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-            iPhoneではSafariでこのサイトをホーム画面に追加し、そのアイコンから開かないと通知許可ダイアログは出ません。
-          </div>
-        ) : null}
         <div className="flex gap-2">
           <Button
             type="button"
