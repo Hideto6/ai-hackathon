@@ -21,7 +21,7 @@ export function GlossaryPopoverSection({
 }: GlossaryPopoverSectionProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="rounded-t-3xl">
+      <SheetContent side="bottom" className="mx-auto max-w-md rounded-t-3xl">
         <SheetHeader className="pt-6">
           <SheetTitle className="text-xl">
             {term?.term}
@@ -31,7 +31,7 @@ export function GlossaryPopoverSection({
               </span>
             ) : null}
           </SheetTitle>
-          <SheetDescription className="text-sm leading-7 text-muted-foreground">
+          <SheetDescription className="break-words text-sm leading-7 text-muted-foreground">
             {term?.description}
           </SheetDescription>
         </SheetHeader>

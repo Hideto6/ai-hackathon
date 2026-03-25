@@ -8,6 +8,7 @@ export type NewsCategory =
   | "社会";
 
 export interface NewsStoryCard {
+  id?: string | number;
   label: string;
   headline: string;
   body: string;
