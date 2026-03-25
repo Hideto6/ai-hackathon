@@ -1,9 +1,18 @@
-export interface DemoNewsCard {
-  id: string;
-  title: string;
-  summary: string;
-  reason: string;
-  impact: string[];
-}
+import { findHomeNewsById, homeDemoNewsItems } from "@/page-components/home/dummy-data/news";
 
-export const demoNewsCards: DemoNewsCard[] = [];
+export const demoNewsCards = homeDemoNewsItems;
+
+export function getNewsDetailModel(newsId: string) {
+  const article = findHomeNewsById(newsId);
+
+  if (!article) {
+    return null;
+  }
+
+  return {
+    article,
+    recommendations: homeDemoNewsItems
+      .filter((candidate) => candidate.id !== newsId)
+      .slice(0, 2),
+  };
+}
