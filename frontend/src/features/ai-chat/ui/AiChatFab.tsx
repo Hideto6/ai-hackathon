@@ -17,7 +17,7 @@ export function AiChatFab({ onClick }: AiChatFabProps) {
       }}
     >
       <Image
-        src="/ai_icon.png"
+        src="/image/ai_icon.png"
         alt="AIに質問する"
         width={56}
         height={56}

@@ -17,7 +17,7 @@ function TypingIndicator() {
   return (
     <div className="ai-chat-message-appear flex items-end gap-2">
       <div className="size-8 flex-shrink-0 overflow-hidden rounded-full border border-neutral-800 bg-[#2a2a2a]">
-        <Image src="/jijii.png" alt="じじい" width={32} height={32} className="size-full object-cover" />
+        <Image src="/image/jijii.png" alt="じじい" width={32} height={32} className="size-full object-cover" />
       </div>
       <div
         className="flex items-center gap-1 rounded-[16px_16px_16px_4px] px-4 py-3"
@@ -38,7 +38,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
     return (
       <div className="ai-chat-message-appear flex items-end gap-2">
         <div className="size-8 flex-shrink-0 overflow-hidden rounded-full border border-neutral-800 bg-[#2a2a2a]">
-          <Image src="/jijii.png" alt="じじい" width={32} height={32} className="size-full object-cover" />
+          <Image src="/image/jijii.png" alt="じじい" width={32} height={32} className="size-full object-cover" />
         </div>
         <div
           className="max-w-[75%] whitespace-pre-wrap px-4 py-3 text-[14px] leading-relaxed"
@@ -138,7 +138,7 @@ export function AiChatModal({
         >
           <div className="flex items-center gap-2">
             <div className="size-8 overflow-hidden rounded-full border border-neutral-800 bg-[#2a2a2a]">
-              <Image src="/jijii.png" alt="じじい" width={32} height={32} className="size-full object-cover" />
+              <Image src="/image/jijii.png" alt="じじい" width={32} height={32} className="size-full object-cover" />
             </div>
             <span className="text-sm font-semibold text-white">じじい</span>
           </div>

@@ -7,7 +7,7 @@ export function HeroSection() {
         <div className="flex items-center gap-3">
           <div className="overflow-hidden rounded-full">
             <Image
-              src="/jijii.png"
+              src="/image/jijii.png"
               alt="じじいにゅーすのロゴ"
               width={52}
               height={52}

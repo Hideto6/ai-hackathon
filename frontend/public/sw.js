@@ -9,8 +9,8 @@ self.addEventListener("push", (event) => {
   event.waitUntil(
     self.registration.showNotification(title, {
       body: "",
-      icon: "/icon.png",
-      badge: "/icon.png",
+      icon: "/image/icon.png",
+      badge: "/image/icon.png",
       data: { url },
       tag: "jijii-news-push",
       renotify: true,

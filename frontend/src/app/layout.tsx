@@ -7,6 +7,17 @@ import { Toaster } from "@/shared/ui/shadcn/ui/sonner";
 export const metadata: Metadata = {
   title: "じじいにゅーす",
   applicationName: "じじいにゅーす",
+  icons: {
+    icon: [
+      { url: "/image/icon.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/image/icon.png", type: "image/png" },
+    ],
+    shortcut: [
+      { url: "/image/icon.png", type: "image/png" },
+    ],
+  },
   appleWebApp: {
     capable: true,
     title: "じじいにゅーす",
