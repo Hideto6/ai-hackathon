@@ -22,7 +22,7 @@ export function GlossaryPopoverSection({
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="bottom" className="mx-auto max-w-md rounded-t-3xl">
-        <SheetHeader className="pt-6">
+        <SheetHeader className="pt-6 pb-24">
           <SheetTitle className="text-xl">
             {term?.term}
             {term ? (
