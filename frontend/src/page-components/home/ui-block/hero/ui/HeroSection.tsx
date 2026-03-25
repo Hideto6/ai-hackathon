@@ -3,9 +3,6 @@ export function HeroSection() {
     <header className="sticky top-0 z-20 border-b bg-background/95 px-4 py-4 backdrop-blur">
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1">
-          <p className="text-xs font-medium text-muted-foreground">
-            30秒で入口だけつかむニュース
-          </p>
           <h1 className="text-xl font-semibold tracking-tight">
             じじいにゅーす
           </h1>
