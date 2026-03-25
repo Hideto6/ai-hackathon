@@ -7,6 +7,7 @@ import type { HomeCategory, HomeTab } from "@/page-components/home/model/types";
 import {
   homeCategories,
   homeDemoNewsItems,
+  setHomeNewsSaved,
 } from "@/page-components/home/dummy-data/news";
 import { HeroSection } from "@/page-components/home/ui-block/hero/ui/HeroSection";
 import { SettingsSection } from "@/page-components/home/ui-block/settings/ui/SettingsSection";
@@ -33,6 +34,7 @@ export function HomeContainer() {
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const [selectedCategory, setSelectedCategory] =
     useState<HomeCategory>("すべて");
+  const [articles, setArticles] = useState(homeDemoNewsItems);
   const [enabledCategories] = useState<NewsCategory[]>(
     defaultEnabledCategories,
   );
@@ -41,7 +43,7 @@ export function HomeContainer() {
   >(defaultNotificationCategories);
 
   const visibleArticles = useMemo(() => {
-    const enabled = homeDemoNewsItems.filter((article) =>
+    const enabled = articles.filter((article) =>
       enabledCategories.includes(article.category),
     );
 
@@ -50,11 +52,20 @@ export function HomeContainer() {
     }
 
     if (selectedCategory === "保存済み") {
-      return homeDemoNewsItems.filter((article) => article.isSaved);
+      return articles.filter((article) => article.isSaved);
     }
 
     return enabled.filter((article) => article.category === selectedCategory);
-  }, [enabledCategories, selectedCategory]);
+  }, [articles, enabledCategories, selectedCategory]);
+
+  const handleToggleSaved = (newsId: string, saved: boolean) => {
+    setHomeNewsSaved(newsId, saved);
+    setArticles((current) =>
+      current.map((article) =>
+        article.id === newsId ? { ...article, isSaved: saved } : article
+      )
+    );
+  };
 
   const handleToggleNotificationCategory = (category: NewsCategory) => {
     setNotificationCategories((current) => {
@@ -78,6 +89,7 @@ export function HomeContainer() {
             selectedCategory={selectedCategory}
             articles={visibleArticles}
             onSelectCategory={setSelectedCategory}
+            onToggleSaved={handleToggleSaved}
           />
         ) : (
           <SettingsSection

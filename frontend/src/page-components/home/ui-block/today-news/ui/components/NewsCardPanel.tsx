@@ -5,7 +5,6 @@ import { useState } from "react";
 
 import { newsCategoryTheme } from "@/entities/news/model/category-theme";
 import type { NewsEntity } from "@/entities/news/model/types";
-import { setHomeNewsSaved } from "@/page-components/home/dummy-data/news";
 import { ArrowRight, Bookmark } from "lucide-react";
 
 import { Badge } from "@/shared/ui/shadcn/ui/badge";
@@ -21,9 +20,10 @@ import { cn } from "@/shared/ui/shadcn/lib/utils";
 
 interface NewsCardPanelProps {
   article: NewsEntity;
+  onToggleSaved: (newsId: string, saved: boolean) => void;
 }
 
-export function NewsCardPanel({ article }: NewsCardPanelProps) {
+export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
   const [isSaved, setIsSaved] = useState(article.isSaved ?? false);
   const theme = newsCategoryTheme[article.category];
   const thumbnailText =
@@ -60,7 +60,7 @@ export function NewsCardPanel({ article }: NewsCardPanelProps) {
           onClick={() => {
             setIsSaved((current) => {
               const next = !current;
-              setHomeNewsSaved(article.id, next);
+              onToggleSaved(article.id, next);
               return next;
             });
           }}

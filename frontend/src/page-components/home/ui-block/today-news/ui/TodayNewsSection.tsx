@@ -9,6 +9,7 @@ interface TodayNewsSectionProps {
   selectedCategory: HomeCategory;
   articles: NewsEntity[];
   onSelectCategory: (category: HomeCategory) => void;
+  onToggleSaved: (newsId: string, saved: boolean) => void;
 }
 
 export function TodayNewsSection({
@@ -16,6 +17,7 @@ export function TodayNewsSection({
   selectedCategory,
   articles,
   onSelectCategory,
+  onToggleSaved,
 }: TodayNewsSectionProps) {
   return (
     <section className="flex min-h-0 flex-1 flex-col">
@@ -26,7 +28,11 @@ export function TodayNewsSection({
       />
       <div className="flex flex-col gap-3 px-4 py-4 pb-24">
         {articles.map((article) => (
-          <NewsCardPanel key={article.id} article={article} />
+          <NewsCardPanel
+            key={article.id}
+            article={article}
+            onToggleSaved={onToggleSaved}
+          />
         ))}
         {articles.length === 0 ? (
           <div className="rounded-xl border border-dashed border-border bg-muted/30 px-4 py-10 text-center text-sm text-muted-foreground">
