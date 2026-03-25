@@ -123,10 +123,24 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
+    font-family:
+      var(--font-sans),
+      "Hiragino Sans",
+      "Hiragino Kaku Gothic ProN",
+      "Yu Gothic",
+      "Meiryo",
+      sans-serif;
     @apply font-sans;
+  }
+  body {
+    font-family:
+      var(--font-sans),
+      "Hiragino Sans",
+      "Hiragino Kaku Gothic ProN",
+      "Yu Gothic",
+      "Meiryo",
+      sans-serif;
+    @apply bg-background text-foreground;
   }
 }
