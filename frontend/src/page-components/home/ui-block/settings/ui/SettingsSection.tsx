@@ -32,7 +32,7 @@ export function SettingsSection({
         <CardHeader>
           <CardTitle className="text-base">通知するカテゴリー</CardTitle>
           <p className="text-sm text-muted-foreground">
-            選んだカテゴリーだけ通知を受け取ります。
+            選んだカテゴリーだけ通知を受け取ります
           </p>
         </CardHeader>
         <CardContent className="space-y-2">
