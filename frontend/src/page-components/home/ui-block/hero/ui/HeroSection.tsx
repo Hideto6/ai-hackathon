@@ -1,11 +1,24 @@
+import Image from "next/image";
+
 export function HeroSection() {
   return (
     <header className="sticky top-0 z-20 border-b bg-background/95 px-4 py-4 backdrop-blur">
       <div className="flex items-start justify-between gap-3">
-        <div className="space-y-1">
+        <div className="flex items-center gap-3">
+          <div className="overflow-hidden rounded-full">
+            <Image
+              src="/jijii.png"
+              alt="じじいにゅーすのロゴ"
+              width={52}
+              height={52}
+              className="size-13 object-cover"
+            />
+          </div>
+          <div className="space-y-1">
           <h1 className="text-xl font-semibold tracking-tight">
             じじいにゅーす
           </h1>
+          </div>
         </div>
       </div>
     </header>
