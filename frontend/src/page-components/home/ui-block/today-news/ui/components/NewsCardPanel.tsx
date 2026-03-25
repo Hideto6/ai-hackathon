@@ -4,7 +4,13 @@ import type { NewsEntity } from "@/entities/news/model/types";
 import { ArrowRight, Bookmark } from "lucide-react";
 
 import { Badge } from "@/shared/ui/shadcn/ui/badge";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/shadcn/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/shadcn/ui/card";
 
 interface NewsCardPanelProps {
   article: NewsEntity;
@@ -17,7 +23,9 @@ export function NewsCardPanel({ article }: NewsCardPanelProps) {
         <CardHeader className="gap-3">
           <div className="flex items-center justify-between gap-3">
             <Badge variant="outline">{article.category}</Badge>
-            <span className="text-xs text-muted-foreground">{article.timestamp}</span>
+            <span className="text-xs text-muted-foreground">
+              {article.timestamp}
+            </span>
           </div>
           <CardTitle className="text-base font-semibold leading-relaxed">
             {article.headline}
@@ -28,7 +36,9 @@ export function NewsCardPanel({ article }: NewsCardPanelProps) {
         </CardContent>
         <CardFooter className="justify-between py-3">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            {article.isSaved ? <Bookmark className="size-3.5 fill-current" /> : null}
+            {article.isSaved ? (
+              <Bookmark className="size-3.5 fill-current text-blue-600" />
+            ) : null}
             3カードで読む
           </div>
           <div className="flex items-center gap-1 text-sm font-medium text-foreground">
