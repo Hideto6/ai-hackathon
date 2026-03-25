@@ -33,12 +33,10 @@ export function StoryCardsSection({
   const visibleCards = article.cards.slice(currentCardIndex, currentCardIndex + 3);
   const theme = newsCategoryTheme[article.category];
 
-  const goPrev = () => {
-    setCurrentCardIndex((current) => {
-      const next = Math.max(current - 1, 0);
-      onCompletionChange(false);
-      return next;
-    });
+  const resetDrag = () => {
+    setStartX(null);
+    setDragX(0);
+    setIsDragging(false);
   };
 
   const completeStory = (direction: "left" | "right") => {
@@ -51,26 +49,23 @@ export function StoryCardsSection({
     }, 180);
   };
 
+  const goPrev = () => {
+    setCurrentCardIndex((current) => Math.max(current - 1, 0));
+    onCompletionChange(false);
+    resetDrag();
+  };
+
   const goNext = () => {
-    setCurrentCardIndex((current) =>
-      Math.min(current + 1, article.cards.length - 1),
-    );
     if (isLastCard) {
       completeStory("left");
       return;
     }
 
-    setCurrentCardIndex((current) => {
-      const next = Math.min(current + 1, article.cards.length - 1);
-      onCompletionChange(false);
-      return next;
-    });
-  };
-
-  const resetDrag = () => {
-    setStartX(null);
-    setDragX(0);
-    setIsDragging(false);
+    setCurrentCardIndex((current) =>
+      Math.min(current + 1, article.cards.length - 1)
+    );
+    onCompletionChange(false);
+    resetDrag();
   };
 
   const finishSwipe = (direction: "left" | "right") => {
@@ -83,7 +78,10 @@ export function StoryCardsSection({
     setDragX(direction === "right" ? 420 : -420);
 
     window.setTimeout(() => {
-      goNext();
+      setCurrentCardIndex((current) =>
+        Math.min(current + 1, article.cards.length - 1)
+      );
+      onCompletionChange(false);
       resetDrag();
     }, 180);
   };
@@ -116,7 +114,7 @@ export function StoryCardsSection({
 
   const renderBody = (
     body: string,
-    terms: GlossaryTermEntity[] | undefined,
+    terms: GlossaryTermEntity[] | undefined
   ) => {
     if (!terms?.length) {
       return <p>{body}</p>;
@@ -153,7 +151,7 @@ export function StoryCardsSection({
                 className="font-medium underline decoration-muted-foreground/60 underline-offset-4 transition-colors hover:text-foreground"
               >
                 {term.term}
-              </button>,
+              </button>
             );
           }
 
@@ -175,23 +173,21 @@ export function StoryCardsSection({
           >
             <div
               className={cn(
-                "h-full bg-foreground transition-all",
-                index <= currentCardIndex ? "w-full" : "w-0",
+                "h-full transition-all",
+                index <= currentCardIndex ? theme.lineClassName : "bg-foreground/15"
               )}
             />
           </div>
         ))}
       </div>
+
       <div className="flex items-center justify-between gap-3">
-        <Badge variant="outline">{article.category}</Badge>
-        <span className="text-xs text-muted-foreground">
-          {article.timestamp}
-        </span>
         <Badge variant="outline" className={theme.badgeClassName}>
           {article.category}
         </Badge>
         <span className="text-xs text-muted-foreground">{article.timestamp}</span>
       </div>
+
       <div className="relative mx-auto h-[500px] w-full max-w-[360px]">
         {visibleCards
           .map((card, stackIndex) => {
@@ -222,52 +218,13 @@ export function StoryCardsSection({
                   isTopCard
                     ? (event) => {
                         const target = event.target as HTMLElement;
-
-                        if (target.closest("[data-term-trigger='true']")) {
-                          return;
-                        }
-
-          if (distance < -50) {
-            goPrev();
-          }
-        }}
-      >
-        <CardHeader className="gap-3">
-          <p className="text-sm text-muted-foreground">{currentCard.label}</p>
-          <CardTitle className="text-2xl leading-tight">
-            {currentCard.headline}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pb-0 text-base leading-8 text-muted-foreground">
-          {renderBody(currentCard.body, currentCard.highlightedTerms)}
-        </CardContent>
-        <CardContent className="flex items-center justify-between gap-3 pt-0">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={goPrev}
-            disabled={isFirstCard}
-          >
-            <ChevronLeft className="size-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={goNext}
-            disabled={isLastCard}
-          >
-            <ChevronRight className="size-5" />
-          </Button>
-        </CardContent>
-      </Card>
+                        if (target.closest("[data-term-trigger='true']")) return;
                         handleDragStart(event.clientX);
                       }
                     : undefined
                 }
                 onMouseMove={
-                  isTopCard
-                    ? (event) => handleDragMove(event.clientX)
-                    : undefined
+                  isTopCard ? (event) => handleDragMove(event.clientX) : undefined
                 }
                 onMouseUp={isTopCard ? handleDragEnd : undefined}
                 onMouseLeave={isTopCard && isDragging ? handleDragEnd : undefined}
@@ -275,11 +232,7 @@ export function StoryCardsSection({
                   isTopCard
                     ? (event) => {
                         const target = event.target as HTMLElement;
-
-                        if (target.closest("[data-term-trigger='true']")) {
-                          return;
-                        }
-
+                        if (target.closest("[data-term-trigger='true']")) return;
                         handleDragStart(event.touches[0]?.clientX ?? 0);
                       }
                     : undefined
@@ -308,19 +261,22 @@ export function StoryCardsSection({
                     </div>
                   </>
                 ) : null}
+
                 <CardHeader className="gap-3 pt-6">
                   <p className="text-sm text-muted-foreground">{card.label}</p>
                   <CardTitle className="text-[1.9rem] leading-tight">
                     {card.headline}
                   </CardTitle>
                 </CardHeader>
+
                 <CardContent className="pb-0 text-lg leading-8 text-muted-foreground">
                   {renderBody(card.body, card.highlightedTerms)}
                 </CardContent>
+
                 <CardContent className="pt-0 text-xs text-muted-foreground">
                   {isTopCard
                     ? isLastCard
-                      ? "最後のカードです"
+                      ? "最後のカードです。もう一度めくると次のニュースへ進みます"
                       : "左右にスワイプしてカードを捲れます"
                     : "次に見えるカード"}
                 </CardContent>
@@ -329,14 +285,21 @@ export function StoryCardsSection({
           })
           .reverse()}
       </div>
+
       <div className="flex items-center justify-between gap-3">
-        <Button variant="ghost" size="icon" onClick={goPrev} disabled={isFirstCard}>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          onClick={goPrev}
+          disabled={isFirstCard}
+        >
           <ChevronLeft className="size-5" />
         </Button>
         <p className="text-center text-xs text-muted-foreground">
           {currentCardIndex + 1} / {article.cards.length}
         </p>
-        <Button variant="ghost" size="icon" onClick={goNext} disabled={isLastCard}>
+        <Button type="button" variant="ghost" size="icon" onClick={goNext}>
           <ChevronRight className="size-5" />
         </Button>
       </div>

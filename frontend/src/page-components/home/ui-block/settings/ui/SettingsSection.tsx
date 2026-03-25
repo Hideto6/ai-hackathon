@@ -12,22 +12,18 @@ import {
 import { cn } from "@/shared/ui/shadcn/lib/utils";
 
 interface SettingsSectionProps {
-  enabledCategories: NewsCategory[];
   notificationCategories: NewsCategory[];
   selectableCategories: NewsCategory[];
-  onToggleCategory: (category: NewsCategory) => void;
   onToggleNotificationCategory: (category: NewsCategory) => void;
 }
 
 export function SettingsSection({
-  enabledCategories,
   notificationCategories,
   selectableCategories,
-  onToggleCategory,
   onToggleNotificationCategory,
 }: SettingsSectionProps) {
   return (
-    <section className="px-4 py-4 pb-24">
+    <section className="flex flex-1 flex-col px-4 py-4 pb-24">
       <Card className="mt-4">
         <CardHeader>
           <CardTitle className="text-base">通知するカテゴリー</CardTitle>

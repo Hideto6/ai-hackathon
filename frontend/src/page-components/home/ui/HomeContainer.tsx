@@ -33,7 +33,7 @@ export function HomeContainer() {
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const [selectedCategory, setSelectedCategory] =
     useState<HomeCategory>("すべて");
-  const [enabledCategories, setEnabledCategories] = useState<NewsCategory[]>(
+  const [enabledCategories] = useState<NewsCategory[]>(
     defaultEnabledCategories,
   );
   const [notificationCategories, setNotificationCategories] = useState<
@@ -55,18 +55,6 @@ export function HomeContainer() {
 
     return enabled.filter((article) => article.category === selectedCategory);
   }, [enabledCategories, selectedCategory]);
-
-  const handleToggleCategory = (category: NewsCategory) => {
-    setEnabledCategories((current) => {
-      if (current.includes(category)) {
-        return current.length === 1
-          ? current
-          : current.filter((item) => item !== category);
-      }
-
-      return [...current, category];
-    });
-  };
 
   const handleToggleNotificationCategory = (category: NewsCategory) => {
     setNotificationCategories((current) => {
@@ -93,13 +81,11 @@ export function HomeContainer() {
           />
         ) : (
           <SettingsSection
-            enabledCategories={enabledCategories}
             notificationCategories={notificationCategories}
             selectableCategories={homeCategories.filter(
               (category): category is NewsCategory =>
                 category !== "すべて" && category !== "保存済み"
             )}
-            onToggleCategory={handleToggleCategory}
             onToggleNotificationCategory={handleToggleNotificationCategory}
           />
         )}
