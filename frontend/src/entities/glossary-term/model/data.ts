@@ -37,6 +37,13 @@ export const glossaryTerms: GlossaryTermEntity[] = [
       "日本、アメリカ、イギリスなど、主要な7つの国の集まり。世界の経済や平和について話し合うリーダー会議で、ここで決まった方針が世界のルールに影響を与える。",
   },
   {
+    id: "iea",
+    term: "IEA",
+    reading: "アイイーエー",
+    description:
+      "国際エネルギー機関のこと。石油や電力の安定供給について各国が協力するための組織。",
+  },
+  {
     id: "supply-chain",
     term: "サプライチェーン",
     reading: "さぷらいちぇーん",
@@ -79,6 +86,62 @@ export const glossaryTerms: GlossaryTermEntity[] = [
       "年度のはじめに決めた予算が足りなくなったとき、後から追加で作る予算のこと。災害復興や急な物価高対策など、緊急で大きなお金が必要になった場合に使われる。",
   },
   {
+    id: "tariff",
+    term: "関税",
+    reading: "かんぜい",
+    description:
+      "海外から入ってくる商品にかける税金のこと。高くすると輸入品の値段が上がり、国同士の貿易関係が悪化したり、私たちの買い物にも影響が出たりする。",
+  },
+  {
+    id: "trade-friction",
+    term: "貿易摩擦",
+    reading: "ぼうえきまさつ",
+    description:
+      "国同士が輸出入のルールや関税をめぐって対立すること。モノの値段や企業活動に影響しやすい。",
+  },
+  {
+    id: "japan-us-alliance",
+    term: "日米同盟",
+    reading: "にちべいどうめい",
+    description:
+      "日本とアメリカが安全保障で協力する約束のこと。日本の防衛や東アジアの安定に大きく関わる基本的な関係。",
+  },
+  {
+    id: "crude-oil",
+    term: "原油",
+    reading: "げんゆ",
+    description:
+      "ガソリンやプラスチックの原料になる、加工前の石油のこと。値段が上がるとガソリン代や電気代、物流コストにも影響しやすい。",
+  },
+  {
+    id: "ceasefire",
+    term: "停戦",
+    reading: "ていせん",
+    description:
+      "戦いや攻撃をいったん止める合意のこと。実現するとエネルギー価格や世界の市場が落ち着く材料になることがある。",
+  },
+  {
+    id: "strait-of-hormuz",
+    term: "ホルムズ海峡",
+    reading: "ほるむずかいきょう",
+    description:
+      "中東の石油を世界へ運ぶ重要な海の通り道。ここが不安定になると、エネルギー価格が上がりやすくなる。",
+  },
+  {
+    id: "energy-facility",
+    term: "エネルギー施設",
+    reading: "えねるぎーしせつ",
+    description:
+      "石油やガス、電力などを作ったり貯めたり運んだりするための設備。攻撃や事故で止まると、生活や産業への影響が大きい。",
+  },
+  {
+    id: "producing-country",
+    term: "産油国",
+    reading: "さんゆこく",
+    description:
+      "石油を多く産出する国のこと。増産や減産の判断が、世界の原油価格に大きく影響する。",
+  },
+  {
     id: "inbound",
     term: "インバウンド",
     reading: "いんばうんど",
@@ -93,11 +156,53 @@ export const glossaryTerms: GlossaryTermEntity[] = [
       "指示を出すだけで、文章や画像、音楽などを自動で作り出すAIのこと。人間のように考え、新しいものを生み出すことが得意で、仕事や勉強のやり方を大きく変えている。",
   },
   {
+    id: "api",
+    term: "API",
+    reading: "エーピーアイ",
+    description:
+      "アプリやサービス同士をつなぐための窓口。あるサービスの機能やデータを、別のサービスから使えるようにする仕組みのこと。",
+  },
+  {
+    id: "world-simulation",
+    term: "ワールドシミュレーション",
+    reading: "わーるどしみゅれーしょん",
+    description:
+      "現実世界の動きや物理法則をコンピューター上で再現する研究のこと。ロボットやAIの学習に使われる。",
+  },
+  {
+    id: "ai",
+    term: "AI",
+    reading: "エーアイ",
+    description:
+      "人の学習や判断をまねるコンピューター技術の総称。文章作成や画像生成、検索補助など、日常や仕事の多くの場面で使われ始めている。",
+  },
+  {
     id: "semiconductor",
     term: "半導体",
     reading: "はんどうたい",
     description:
       "スマホやパソコン、家電など、あらゆる電化製品の「脳」となる重要な部品。これがないと現代の製品は作れないため、世界中で奪い合いが起きるほど貴重な存在。",
+  },
+  {
+    id: "critical-minerals",
+    term: "重要鉱物",
+    reading: "じゅうようこうぶつ",
+    description:
+      "半導体や電池、スマホなどを作るために欠かせない特別な資源のこと。確保できないとハイテク製品の供給が不安定になりやすい。",
+  },
+  {
+    id: "deepfake",
+    term: "ディープフェイク",
+    reading: "でぃーぷふぇいく",
+    description:
+      "AIで本物そっくりに作られた偽の画像や動画のこと。拡散されると誤情報や権利侵害の問題につながる。",
+  },
+  {
+    id: "copyright",
+    term: "著作権",
+    reading: "ちょさくけん",
+    description:
+      "文章や画像、音楽などを作った人が持つ権利のこと。勝手に使ったり真似したりすると問題になる。",
   },
   {
     id: "cloud",
@@ -126,6 +231,20 @@ export const glossaryTerms: GlossaryTermEntity[] = [
     reading: "じっしつちんぎん",
     description:
       "給料の額面だけでなく、物価の影響を考えた「本当の買い物のしやすさ」のこと。給料が増えても、それ以上に物価が上がれば実質賃金は下がり、生活は苦しくなる。",
+  },
+  {
+    id: "unified-local-elections",
+    term: "統一地方選挙",
+    reading: "とういつちほうせんきょ",
+    description:
+      "全国の知事や市長、地方議員などをまとめて選ぶ選挙。地域の交通、教育、子育て政策にもつながる。",
+  },
+  {
+    id: "personnel-reduction",
+    term: "人員削減",
+    reading: "じんいんさくげん",
+    description:
+      "会社が働く人の数を減らすこと。経営の見直しやAI導入などで行われることがある。",
   },
   {
     id: "sdgs",

@@ -24,6 +24,7 @@ function attachGlossaryTerms(article: NewsEntity): NewsEntity {
     cards: article.cards.map(
       (card): NewsStoryCard => ({
         ...card,
+        headlineHighlightedTerms: getHighlightedTerms(card.headline),
         highlightedTerms: getHighlightedTerms(card.body),
       }),
     ),

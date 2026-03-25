@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { ReactNode } from "react";
+import { Fragment } from "react";
 import { newsCategoryTheme } from "@/entities/news/model/category-theme";
 import type { GlossaryTermEntity } from "@/entities/glossary-term/model/types";
 import type { StoryCardsSectionProps } from "@/page-components/news-detail/model/types";
@@ -16,6 +16,43 @@ import {
   CardTitle,
 } from "@/shared/ui/shadcn/ui/card";
 import { cn } from "@/shared/ui/shadcn/lib/utils";
+
+function getInteractiveSegments(
+  text: string,
+  terms: GlossaryTermEntity[] | undefined
+): Array<string | GlossaryTermEntity> {
+  if (!terms?.length) {
+    return [text];
+  }
+
+  const sortedTerms = [...terms].sort((a, b) => b.term.length - a.term.length);
+  const segments: Array<string | GlossaryTermEntity> = [];
+  let currentIndex = 0;
+
+  while (currentIndex < text.length) {
+    const matchedTerm = sortedTerms.find((term) =>
+      text.startsWith(term.term, currentIndex)
+    );
+
+    if (!matchedTerm) {
+      let nextIndex = currentIndex + 1;
+      while (
+        nextIndex < text.length &&
+        !sortedTerms.some((term) => text.startsWith(term.term, nextIndex))
+      ) {
+        nextIndex += 1;
+      }
+      segments.push(text.slice(currentIndex, nextIndex));
+      currentIndex = nextIndex;
+      continue;
+    }
+
+    segments.push(matchedTerm);
+    currentIndex += matchedTerm.term.length;
+  }
+
+  return segments;
+}
 
 export function StoryCardsSection({
   article,
@@ -111,55 +148,31 @@ export function StoryCardsSection({
     resetDrag();
   };
 
-  const renderBody = (
-    body: string,
+  const renderInteractiveText = (
+    text: string,
     terms: GlossaryTermEntity[] | undefined
   ) => {
-    if (!terms?.length) {
-      return <p>{body}</p>;
-    }
+    const segments = getInteractiveSegments(text, terms);
 
-    let segments: Array<string | ReactNode> = [body];
+    return segments.map((segment, index) => {
+      if (typeof segment === "string") {
+        return (
+          <Fragment key={`${segment}-${index}`}>{segment}</Fragment>
+        );
+      }
 
-    for (const term of terms) {
-      segments = segments.flatMap((segment: string | ReactNode, index: number) => {
-        if (typeof segment !== "string") {
-          return [segment];
-        }
-
-        const fragments = segment.split(term.term);
-
-        if (fragments.length === 1) {
-          return [segment];
-        }
-
-        return fragments.flatMap((fragment: string, fragmentIndex: number) => {
-          const parts: Array<string | ReactNode> = [];
-
-          if (fragment) {
-            parts.push(fragment);
-          }
-
-          if (fragmentIndex < fragments.length - 1) {
-            parts.push(
-              <button
-                key={`${term.id}-${index}-${fragmentIndex}`}
-                type="button"
-                onClick={() => onSelectTerm(term)}
-                data-term-trigger="true"
-                className="font-medium underline decoration-muted-foreground/60 underline-offset-4 transition-colors hover:text-foreground"
-              >
-                {term.term}
-              </button>
-            );
-          }
-
-          return parts;
-        });
-      });
-    }
-
-    return <p>{segments}</p>;
+      return (
+        <button
+          key={`${segment.id}-${index}`}
+          type="button"
+          onClick={() => onSelectTerm(segment)}
+          data-term-trigger="true"
+          className="rounded-md bg-primary/10 px-1.5 py-0.5 font-medium text-foreground underline decoration-primary/50 underline-offset-4 transition-colors hover:bg-primary/15"
+        >
+          {segment.term}
+        </button>
+      );
+    });
   };
 
   return (
@@ -245,12 +258,15 @@ export function StoryCardsSection({
                 <CardHeader className="gap-3 pt-6">
                   <p className="text-sm text-muted-foreground">{card.label}</p>
                   <CardTitle className="text-[1.9rem] leading-tight">
-                    {card.headline}
+                    {renderInteractiveText(
+                      card.headline,
+                      card.headlineHighlightedTerms
+                    )}
                   </CardTitle>
                 </CardHeader>
 
                 <CardContent className="pb-0 text-lg leading-8 text-muted-foreground">
-                  {renderBody(card.body, card.highlightedTerms)}
+                  <p>{renderInteractiveText(card.body, card.highlightedTerms)}</p>
                 </CardContent>
               </Card>
             );

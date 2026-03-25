@@ -12,6 +12,7 @@ export interface NewsStoryCard {
   label: string;
   headline: string;
   body: string;
+  headlineHighlightedTerms?: GlossaryTermEntity[];
   highlightedTerms?: GlossaryTermEntity[];
 }
 
