@@ -19,7 +19,6 @@ export interface NewsStoryCard {
 export interface NewsThumbnail {
   imageUrl?: string;
   alt: string;
-  placeholderText: string;
 }
 
 export interface NewsEntity {
