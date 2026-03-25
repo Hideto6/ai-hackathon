@@ -85,7 +85,7 @@ export function NewsDetailContainer() {
             className="rounded-full"
           >
             <Bookmark
-              className={isSaved ? "fill-amber-500 text-amber-500" : "text-muted-foreground"}
+              className={isSaved ? "fill-blue-600 text-blue-600" : "text-muted-foreground"}
             />
             <span className="sr-only">{isSaved ? "保存済み" : "保存する"}</span>
           </Button>
