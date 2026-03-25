@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -97,7 +97,7 @@ export function SearchSection({
                     )}
                   />
                   <CardContent className="pt-0">
-                    <div className="overflow-hidden rounded-xl border border-dashed border-border bg-muted/40">
+                    <div className="overflow-hidden rounded-xl bg-muted/40">
                       {thumbnailImageUrl ? (
                         <div className="relative aspect-[16/9]">
                           <Image
@@ -109,10 +109,7 @@ export function SearchSection({
                           />
                         </div>
                       ) : (
-                        <div className="grid aspect-[16/9] place-items-center px-4 text-center text-sm text-muted-foreground">
-                          {article.thumbnail?.placeholderText ??
-                            "画像を配置してください"}
-                        </div>
+                        <div className="aspect-[16/9]" />
                       )}
                     </div>
                   </CardContent>

@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { toast } from "sonner";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import type { NewsCategory } from "@/entities/news/model/types";
 import type { HomeCategory, HomeTab } from "@/page-components/home/model/types";
@@ -34,7 +34,6 @@ const defaultNotificationCategories: NewsCategory[] = [
 ];
 
 export function HomeContainer() {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   // URLから初期状態を取得
@@ -53,6 +52,12 @@ export function HomeContainer() {
   const [notificationCategories, setNotificationCategories] = useState<
     NewsCategory[]
   >(defaultNotificationCategories);
+
+  // 初回読み込み時に記事をランダムに入れ替える
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setArticles((current) => [...current].sort(() => Math.random() - 0.5));
+  }, []);
 
   // 状態が変化した時にURLパラメータを更新
   useEffect(() => {

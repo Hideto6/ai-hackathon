@@ -32,10 +32,11 @@ export function NewsCardPanel({
   eagerImage = false,
 }: NewsCardPanelProps) {
   const [isSaved, setIsSaved] = useState(article.isSaved ?? false);
-  const theme = newsCategoryTheme[article.category];
+  const theme = newsCategoryTheme[article.category] ?? {
+    lineClassName: "bg-gray-500",
+    badgeClassName: "border-gray-200 bg-gray-50 text-gray-700",
+  };
   const thumbnailImageUrl = article.thumbnail?.imageUrl;
-  const thumbnailText =
-    article.thumbnail?.placeholderText ?? "画像を配置してください";
 
   return (
     <Card className="relative flex flex-col gap-3 overflow-hidden transition-transform duration-150 hover:-translate-y-0.5">
@@ -46,7 +47,7 @@ export function NewsCardPanel({
       />
       <div className={cn("absolute inset-y-0 left-0 w-1.5", theme.lineClassName)} />
       <CardContent className="pointer-events-none pt-0">
-        <div className="overflow-hidden rounded-xl border border-dashed border-border bg-muted/40">
+        <div className="overflow-hidden rounded-xl bg-muted/40">
           {thumbnailImageUrl ? (
             <div className="relative aspect-[16/9]">
               <Image
@@ -59,9 +60,7 @@ export function NewsCardPanel({
               />
             </div>
           ) : (
-            <div className="grid aspect-[16/9] place-items-center px-4 text-center text-sm text-muted-foreground">
-              {thumbnailText}
-            </div>
+            <div className="aspect-[16/9]" />
           )}
         </div>
       </CardContent>

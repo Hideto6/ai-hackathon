@@ -85,11 +85,12 @@ export function NewsDetailContainer() {
   }, [detail]);
 
   const { messages, isLoading: isChatLoading, sendMessage, resetChat } = useChat(
-    detail?.article ?? { id: "", category: "国際" as const, headline: "", timestamp: "", notificationHook: "", thumbnail: { alt: "", placeholderText: "" }, cards: [] }
+    detail?.article ?? { id: "", category: "国際" as const, headline: "", timestamp: "", notificationHook: "", thumbnail: { alt: "" }, cards: [] }
   );
 
   useEffect(() => {
     resetChat();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsChatOpen(false);
 
     // 別の記事やパラメータ付きで遷移してきた場合は、URLの状態に合わせて初期化・リセットする
