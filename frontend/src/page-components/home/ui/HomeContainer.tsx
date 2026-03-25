@@ -82,7 +82,7 @@ export function HomeContainer() {
   return (
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background shadow-sm">
-        <HeroSection activeTab={activeTab} />
+        <HeroSection />
         {activeTab === "home" ? (
           <>
             <NotificationPreviewSection article={featuredArticle} />
