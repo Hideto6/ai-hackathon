@@ -1,4 +1,8 @@
-export interface NewsDetailModel {
-  id: string;
-  title: string;
+import type { GlossaryTermEntity } from "@/entities/glossary-term/model/types";
+import type { NewsEntity } from "@/entities/news/model/types";
+
+export interface StoryCardsSectionProps {
+  article: NewsEntity;
+  onSelectTerm: (term: GlossaryTermEntity) => void;
+  onCompletionChange: (completed: boolean) => void;
 }
