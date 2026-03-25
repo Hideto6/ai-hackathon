@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
 import type { NewsCategory } from "@/entities/news/model/types";
 import type { HomeCategory, HomeTab } from "@/page-components/home/model/types";
@@ -70,11 +71,22 @@ export function HomeContainer() {
   const handleToggleNotificationCategory = (category: NewsCategory) => {
     setNotificationCategories((current) => {
       if (current.includes(category)) {
-        return current.length === 1
-          ? current
-          : current.filter((item) => item !== category);
+        if (current.length === 1) {
+          toast.warning("通知カテゴリは最低1つ必要です", {
+            description: "少なくとも1カテゴリは通知対象に残してください。",
+          });
+          return current;
+        }
+
+        toast.info(`${category} の通知をオフにしました`, {
+          description: "設定はこの端末上で反映されています。",
+        });
+        return current.filter((item) => item !== category);
       }
 
+      toast.success(`${category} の通知をオンにしました`, {
+        description: "このカテゴリのポップアップ通知を受け取れます。",
+      });
       return [...current, category];
     });
   };
@@ -99,6 +111,7 @@ export function HomeContainer() {
                 category !== "すべて" && category !== "保存済み"
             )}
             onToggleNotificationCategory={handleToggleNotificationCategory}
+            sampleNotificationTitle={articles[0]?.headline ?? "テスト通知"}
           />
         )}
         <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />

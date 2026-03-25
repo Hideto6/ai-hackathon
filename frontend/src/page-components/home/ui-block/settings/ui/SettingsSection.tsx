@@ -1,6 +1,7 @@
 "use client";
 
 import type { NewsCategory } from "@/entities/news/model/types";
+import { PushNotificationSection } from "@/features/push-notification/ui/PushNotificationSection";
 import { Check } from "lucide-react";
 
 import {
@@ -15,15 +16,18 @@ interface SettingsSectionProps {
   notificationCategories: NewsCategory[];
   selectableCategories: NewsCategory[];
   onToggleNotificationCategory: (category: NewsCategory) => void;
+  sampleNotificationTitle: string;
 }
 
 export function SettingsSection({
   notificationCategories,
   selectableCategories,
   onToggleNotificationCategory,
+  sampleNotificationTitle,
 }: SettingsSectionProps) {
   return (
     <section className="flex flex-1 flex-col px-4 py-4 pb-24">
+      <PushNotificationSection sampleTitle={sampleNotificationTitle} />
       <Card className="mt-4">
         <CardHeader>
           <CardTitle className="text-base">通知するカテゴリー</CardTitle>

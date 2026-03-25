@@ -1,5 +1,52 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Push Notification Setup
+
+This app supports Web Push on a phone that opens the deployed Vercel URL.
+
+### Required env vars for Vercel
+
+Set these on the `frontend` project:
+
+```bash
+NEXT_PUBLIC_VAPID_PUBLIC_KEY=...
+VAPID_PRIVATE_KEY=...
+VAPID_SUBJECT=mailto:you@example.com
+PUSH_ADMIN_SECRET=...
+KV_REST_API_URL=...
+KV_REST_API_TOKEN=...
+```
+
+`KV_REST_API_URL` and `KV_REST_API_TOKEN` are for Vercel KV. Without them, subscriptions fall back to in-memory storage and will not persist across serverless restarts.
+
+### Generate VAPID keys
+
+From `frontend/`:
+
+```bash
+npx web-push generate-vapid-keys
+```
+
+### Phone-side flow
+
+1. Open the deployed URL on the phone.
+2. Go to the settings tab.
+3. Tap `このスマホで通知を受け取る`.
+4. Tap `テスト通知` to verify delivery.
+
+On iPhone, Web Push requires Safari and adding the site to the Home Screen before enabling notifications.
+
+### Send a real notification
+
+The payload is title-only.
+
+```bash
+curl -X POST https://YOUR_DOMAIN/api/push/send \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_PUSH_ADMIN_SECRET" \
+  -d '{"title":"ニュースタイトル本文だけをここに入れる","url":"/"}'
+```
+
 ## Getting Started
 
 First, run the development server:
