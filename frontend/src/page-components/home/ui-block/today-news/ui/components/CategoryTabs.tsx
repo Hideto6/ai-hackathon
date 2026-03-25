@@ -49,7 +49,7 @@ export function CategoryTabs({
           category === "すべて"
             ? "border-foreground bg-foreground text-background"
             : category === "保存済み"
-              ? "border-amber-300 bg-amber-100 text-amber-800"
+              ? "border-blue-300 bg-blue-100 text-blue-800"
               : newsCategoryTheme[category].badgeClassName;
 
         return (

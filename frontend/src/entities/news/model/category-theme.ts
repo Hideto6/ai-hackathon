@@ -8,8 +8,8 @@ export const newsCategoryTheme: Record<
   }
 > = {
   国際: {
-    lineClassName: "bg-sky-500",
-    badgeClassName: "border-sky-200 bg-sky-50 text-sky-700",
+    lineClassName: "bg-cyan-500",
+    badgeClassName: "border-cyan-200 bg-cyan-50 text-cyan-700",
   },
   政治: {
     lineClassName: "bg-violet-500",
