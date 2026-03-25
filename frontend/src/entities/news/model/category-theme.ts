@@ -1,23 +1,30 @@
-import type { NewsCategory } from "./types";
+import type { NewsCategory } from "@/entities/news/model/types";
 
-export interface CategoryTheme {
-  badgeClassName: string;
-}
-
-export const newsCategoryTheme: Record<NewsCategory, CategoryTheme> = {
+export const newsCategoryTheme: Record<
+  NewsCategory,
+  {
+    lineClassName: string;
+    badgeClassName: string;
+  }
+> = {
   国際: {
-    badgeClassName: "bg-blue-100 text-blue-700 border-blue-200",
+    lineClassName: "bg-sky-500",
+    badgeClassName: "border-sky-200 bg-sky-50 text-sky-700",
   },
   政治: {
-    badgeClassName: "bg-purple-100 text-purple-700 border-purple-200",
+    lineClassName: "bg-violet-500",
+    badgeClassName: "border-violet-200 bg-violet-50 text-violet-700",
   },
   経済: {
-    badgeClassName: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    lineClassName: "bg-emerald-500",
+    badgeClassName: "border-emerald-200 bg-emerald-50 text-emerald-700",
   },
   テクノロジー: {
-    badgeClassName: "bg-cyan-100 text-cyan-700 border-cyan-200",
+    lineClassName: "bg-amber-500",
+    badgeClassName: "border-amber-200 bg-amber-50 text-amber-700",
   },
   社会: {
-    badgeClassName: "bg-orange-100 text-orange-700 border-orange-200",
+    lineClassName: "bg-rose-500",
+    badgeClassName: "border-rose-200 bg-rose-50 text-rose-700",
   },
 };

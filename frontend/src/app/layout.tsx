@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "じじいにゅーす",
-  description: "30秒でニュースの入口をつかむ学生向けダミーUI",
 };
 
 export default function RootLayout({

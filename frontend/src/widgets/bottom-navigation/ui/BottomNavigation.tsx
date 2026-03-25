@@ -16,7 +16,7 @@ export function BottomNavigation({
   onTabChange,
 }: BottomNavigationProps) {
   return (
-    <nav className="sticky bottom-0 z-20 border-t bg-background/95 px-4 py-2 backdrop-blur">
+    <nav className="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-md border-t bg-background/95 px-4 py-2 backdrop-blur">
       <div className="grid grid-cols-2 gap-2">
         <Button
           type="button"
