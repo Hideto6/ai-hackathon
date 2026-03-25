@@ -9,4 +9,5 @@ export interface NewsDetailModel {
 export interface StoryCardsSectionProps {
   article: NewsEntity;
   onSelectTerm: (term: GlossaryTermEntity) => void;
+  onCompletionChange: (completed: boolean) => void;
 }
