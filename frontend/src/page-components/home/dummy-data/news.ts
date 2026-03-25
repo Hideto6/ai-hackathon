@@ -10,7 +10,13 @@ export const homeCategories: Array<"すべて" | "保存済み" | NewsCategory> 
   "社会",
   "保存済み",
 ];
-export const homeDemoNewsItems: NewsEntity[] = newsData;
+export const homeDemoNewsItems: NewsEntity[] = newsData.map((article) => ({
+  ...article,
+  thumbnail: article.thumbnail ?? {
+    alt: `${article.category}ニュースのサムネイル`,
+    placeholderText: "画像を配置してください",
+  },
+}));
 
 export function findHomeNewsById(newsId: string) {
   return homeDemoNewsItems.find((article) => article.id === newsId) ?? null;

@@ -20,6 +20,8 @@ interface NewsCardPanelProps {
 
 export function NewsCardPanel({ article }: NewsCardPanelProps) {
   const theme = newsCategoryTheme[article.category];
+  const thumbnailText =
+    article.thumbnail?.placeholderText ?? "画像を配置してください";
 
   return (
     <Link href={`/news/${article.id}`} className="block">
@@ -28,7 +30,7 @@ export function NewsCardPanel({ article }: NewsCardPanelProps) {
         <CardContent className="pt-0">
           <div className="overflow-hidden rounded-xl border border-dashed border-border bg-muted/40">
             <div className="grid aspect-[16/9] place-items-center px-4 text-center text-sm text-muted-foreground">
-              {article.thumbnail.placeholderText}
+              {thumbnailText}
             </div>
           </div>
         </CardContent>
