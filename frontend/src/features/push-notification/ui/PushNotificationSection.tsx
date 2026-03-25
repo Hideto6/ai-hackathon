@@ -154,6 +154,12 @@ export function PushNotificationSection({
         throw new Error("先に通知を有効化してください。");
       }
 
+      toast.success("30秒後にテスト通知を送信します");
+
+      await new Promise((resolve) => {
+        window.setTimeout(resolve, 30_000);
+      });
+
       const response = await fetch("/api/push/test", {
         method: "POST",
         headers: {
