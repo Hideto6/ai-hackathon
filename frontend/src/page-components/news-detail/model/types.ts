@@ -1,4 +1,12 @@
+import type { GlossaryTermEntity } from "@/entities/glossary-term/model/types";
+import type { NewsEntity } from "@/entities/news/model/types";
+
 export interface NewsDetailModel {
-  id: string;
-  title: string;
+  article: NewsEntity;
+  recommendations: NewsEntity[];
+}
+
+export interface StoryCardsSectionProps {
+  article: NewsEntity;
+  onSelectTerm: (term: GlossaryTermEntity) => void;
 }

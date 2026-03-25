@@ -1,6 +1,10 @@
 {
+  "/(public)/design-test/page": "/design-test",
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
   "/favicon.ico/route": "/favicon.ico",
-  "/page": "/"
+  "/news/[newsId]/page": "/news/[newsId]",
+  "/page": "/",
+  "/saved/page": "/saved",
+  "/today/page": "/today"
 }
