@@ -17,12 +17,19 @@ export async function POST(request: Request) {
   const body = (await request.json()) as {
     subscription?: unknown;
     title?: unknown;
+    delaySeconds?: unknown;
   };
   const subscription = validatePushSubscription(body.subscription);
   const title =
     typeof body.title === "string" && body.title.trim().length > 0
       ? body.title.trim()
       : "テスト通知";
+  const delaySeconds =
+    typeof body.delaySeconds === "number" &&
+    Number.isFinite(body.delaySeconds) &&
+    body.delaySeconds >= 0
+      ? Math.min(body.delaySeconds, 30)
+      : 0;
 
   if (!subscription) {
     return NextResponse.json(
@@ -37,6 +44,12 @@ export async function POST(request: Request) {
     config.privateKey,
   );
 
+  if (delaySeconds > 0) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, delaySeconds * 1000);
+    });
+  }
+
   await webpush.sendNotification(
     subscription,
     JSON.stringify({
@@ -45,5 +58,5 @@ export async function POST(request: Request) {
     }),
   );
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, delaySeconds });
 }

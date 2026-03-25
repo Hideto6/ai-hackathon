@@ -156,10 +156,6 @@ export function PushNotificationSection({
 
       toast.success("30秒後にテスト通知を送信します");
 
-      await new Promise((resolve) => {
-        window.setTimeout(resolve, 30_000);
-      });
-
       const response = await fetch("/api/push/test", {
         method: "POST",
         headers: {
@@ -168,6 +164,7 @@ export function PushNotificationSection({
         body: JSON.stringify({
           subscription: subscription.toJSON(),
           title: sampleTitle,
+          delaySeconds: 30,
         }),
       });
 
@@ -175,7 +172,7 @@ export function PushNotificationSection({
         throw new Error("テスト通知の送信に失敗しました。");
       }
 
-      toast.success("テスト通知を送信しました");
+      toast.success("30秒後のテスト通知を予約しました");
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "テスト通知の送信に失敗しました。",

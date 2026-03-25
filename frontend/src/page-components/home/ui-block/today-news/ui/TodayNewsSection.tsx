@@ -27,11 +27,12 @@ export function TodayNewsSection({
         onSelectCategory={onSelectCategory}
       />
       <div className="flex flex-col gap-3 px-4 py-4 pb-24">
-        {articles.map((article) => (
+        {articles.map((article, index) => (
           <NewsCardPanel
             key={article.id}
             article={article}
             onToggleSaved={onToggleSaved}
+            eagerImage={index === 0}
           />
         ))}
         {articles.length === 0 ? (

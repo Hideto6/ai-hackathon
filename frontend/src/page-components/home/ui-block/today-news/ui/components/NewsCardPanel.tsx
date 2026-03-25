@@ -22,12 +22,14 @@ interface NewsCardPanelProps {
   article: NewsEntity;
   onToggleSaved: (newsId: string, saved: boolean) => void;
   showSaveButton?: boolean;
+  eagerImage?: boolean;
 }
 
 export function NewsCardPanel({
   article,
   onToggleSaved,
   showSaveButton = true,
+  eagerImage = false,
 }: NewsCardPanelProps) {
   const [isSaved, setIsSaved] = useState(article.isSaved ?? false);
   const theme = newsCategoryTheme[article.category];
@@ -53,6 +55,7 @@ export function NewsCardPanel({
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 33vw"
+                loading={eagerImage ? "eager" : undefined}
               />
             </div>
           ) : (
