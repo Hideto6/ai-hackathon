@@ -6,7 +6,6 @@ import { ArrowRight } from "lucide-react";
 import { Badge } from "@/shared/ui/shadcn/ui/badge";
 import {
   Card,
-  CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -27,7 +26,9 @@ export function NewsCardPanel({ article }: NewsCardPanelProps) {
         <div className={cn("absolute inset-y-0 left-0 w-1.5", theme.lineClassName)} />
         <CardHeader className="gap-3">
           <div className="flex items-center justify-between gap-3">
-            <Badge variant="outline">{article.category}</Badge>
+            <Badge variant="outline" className={theme.badgeClassName}>
+              {article.category}
+            </Badge>
             <span className="text-xs text-muted-foreground">
               {article.timestamp}
             </span>
@@ -36,9 +37,6 @@ export function NewsCardPanel({ article }: NewsCardPanelProps) {
             {article.headline}
           </CardTitle>
         </CardHeader>
-        <CardContent className="pt-0 text-sm leading-6 text-muted-foreground">
-          {article.cards[0]?.body}
-        </CardContent>
 
         <CardFooter className="justify-end py-3">
           <div className="flex items-center gap-1 text-sm font-medium text-foreground">
