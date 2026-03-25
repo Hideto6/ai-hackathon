@@ -14,12 +14,19 @@ export interface NewsStoryCard {
   highlightedTerms?: GlossaryTermEntity[];
 }
 
+export interface NewsThumbnail {
+  imageUrl?: string;
+  alt: string;
+  placeholderText: string;
+}
+
 export interface NewsEntity {
   id: string;
   category: NewsCategory;
   headline: string;
   timestamp: string;
   notificationHook: string;
+  thumbnail: NewsThumbnail;
   cards: NewsStoryCard[];
   isSaved?: boolean;
 }

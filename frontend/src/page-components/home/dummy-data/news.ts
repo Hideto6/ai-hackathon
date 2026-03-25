@@ -17,6 +17,10 @@ export const homeDemoNewsItems: NewsEntity[] = [
     headline: "📈 ナント❗給料が5%も上がったんだって〜❗❗🎉🎉 就活生にはウレシイ朗報じゃないカナ〜😆✨ オジサンもビックリだヨ💦",
     timestamp: "2時間前",
     notificationHook: "春闘で賃上げがドンドン進んでるらしいヨ〜😳💰 就活の空気もガラッと変わるかもネ❗ オジサン的にはイイ時代になったナァ〜🥹✨",
+    thumbnail: {
+      alt: "経済ニュースのサムネイル",
+      placeholderText: "画像を配置してください",
+    },
     isSaved: true,
     cards: [
       {
@@ -50,6 +54,10 @@ export const homeDemoNewsItems: NewsEntity[] = [
     headline: "🌍 アメリカと中国がまた関税でモメてるみたいだヨ〜💦😥 困ったモンだネェ〜😮‍💨",
     timestamp: "4時間前",
     notificationHook: "米中の関税バトル、また空気がピリピリしてるヨ〜😰💦 物価にもヒビキそうだし、オジサン心配だナァ〜🥺💭",
+    thumbnail: {
+      alt: "国際ニュースのサムネイル",
+      placeholderText: "画像を配置してください",
+    },
     cards: [
       {
         label: "何が起きた？",
@@ -82,6 +90,10 @@ export const homeDemoNewsItems: NewsEntity[] = [
     headline: "🤖 AIがついに人間の仕事を奪い始めた❗❗😲💦 オジサンの仕事もヤバイかナ〜😱😱😱",
     timestamp: "6時間前",
     notificationHook: "生成AIで仕事の中身がガラッと変わるって話、いよいよ現実味が出てきちゃったヨ〜😳💦 オジサンもAI勉強しなきゃダメかナ〜📚😅",
+    thumbnail: {
+      alt: "テクノロジーニュースのサムネイル",
+      placeholderText: "画像を配置してください",
+    },
     isSaved: true,
     cards: [
       {
@@ -115,6 +127,10 @@ export const homeDemoNewsItems: NewsEntity[] = [
     headline: "🗳️ 来月の選挙、若者の投票率が心配でオジサン夜も眠れないヨ〜💭😢 ちゃんと行ってネ❗❗",
     timestamp: "8時間前",
     notificationHook: "選挙が近いのに若い人の投票率が低いらしいヨ〜😥💦 生活にも結構ヒビク大事な話なんだけどナァ〜🤔 オジサンからのお願い、投票行ってネ🙏✨",
+    thumbnail: {
+      alt: "政治ニュースのサムネイル",
+      placeholderText: "画像を配置してください",
+    },
     cards: [
       {
         label: "何が起きた？",
@@ -147,6 +163,10 @@ export const homeDemoNewsItems: NewsEntity[] = [
     headline: "🏠 一人暮らしの家賃がまた上がってるって聞いてオジサン泣きそうだヨ〜😢😢💦 キミたち大丈夫カナ❓",
     timestamp: "12時間前",
     notificationHook: "都市部の家賃、またジワジワ上がってるみたいだヨ〜😰💦 一人暮らし勢には地味にキツイよネ〜😢 オジサンも昔苦労したナァ〜🥺💭",
+    thumbnail: {
+      alt: "社会ニュースのサムネイル",
+      placeholderText: "画像を配置してください",
+    },
     cards: [
       {
         label: "何が起きた？",
@@ -177,4 +197,3 @@ export function setHomeNewsSaved(newsId: string, saved: boolean) {
   item.isSaved = saved;
   return item;
 }
-
