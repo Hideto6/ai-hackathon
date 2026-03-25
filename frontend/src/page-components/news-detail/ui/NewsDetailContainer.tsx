@@ -11,6 +11,9 @@ import { GlossaryPopoverSection } from "@/page-components/news-detail/ui-block/g
 import { RecommendationSection } from "@/page-components/news-detail/ui-block/recommendation/ui/RecommendationSection";
 import { StoryCardsSkeleton } from "@/page-components/news-detail/ui-block/story-cards/skeleton/StoryCardsSkeleton";
 import { StoryCardsSection } from "@/page-components/news-detail/ui-block/story-cards/ui/StoryCardsSection";
+import { AiChatFab } from "@/features/ai-chat/ui/AiChatFab";
+import { AiChatModal } from "@/features/ai-chat/ui/AiChatModal";
+import { useChat } from "@/features/ai-chat/hooks/useChat";
 import { ArrowLeft, Bookmark } from "lucide-react";
 
 import { Button } from "@/shared/ui/shadcn/ui/button";
@@ -23,7 +26,12 @@ export function NewsDetailContainer() {
   const [isSaved, setIsSaved] = useState(detail?.article.isSaved ?? false);
   const [isReadingComplete, setIsReadingComplete] = useState(false);
   const [showRecommendations, setShowRecommendations] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const recommendationTimerRef = useRef<number | null>(null);
+
+  const { messages, isLoading: isChatLoading, sendMessage, resetChat } = useChat(
+    detail?.article ?? { id: "", category: "国際" as const, headline: "", timestamp: "", notificationHook: "", thumbnail: { alt: "", placeholderText: "" }, cards: [] }
+  );
 
   useEffect(() => {
     return () => {
@@ -32,6 +40,12 @@ export function NewsDetailContainer() {
       }
     };
   }, []);
+
+  // Reset chat when article changes
+  useEffect(() => {
+    resetChat();
+    setIsChatOpen(false);
+  }, [params.newsId, resetChat]);
 
   const handleCompletionChange = (completed: boolean) => {
     if (recommendationTimerRef.current !== null) {
@@ -65,7 +79,7 @@ export function NewsDetailContainer() {
 
   return (
     <div className="min-h-screen bg-muted/30">
-      <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background px-4 py-4">
+      <div className="relative mx-auto flex min-h-screen max-w-md flex-col bg-background px-4 py-4">
         <div className="mb-4 flex items-center justify-between gap-3">
           <Button variant="ghost" className="px-0" onClick={() => router.back()}>
             <ArrowLeft className="size-4" />
@@ -120,6 +134,18 @@ export function NewsDetailContainer() {
               />
             </div>
           </div>
+        )}
+        {detail && !isChatOpen && (
+          <AiChatFab onClick={() => setIsChatOpen(true)} />
+        )}
+        {detail && (
+          <AiChatModal
+            open={isChatOpen}
+            onClose={() => setIsChatOpen(false)}
+            messages={messages}
+            isLoading={isChatLoading}
+            onSendMessage={sendMessage}
+          />
         )}
       </div>
       <GlossaryPopoverSection

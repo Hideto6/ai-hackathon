@@ -144,3 +144,36 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* AI Chat Animations */
+@keyframes ai-chat-message-appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ai-chat-typing-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.ai-chat-message-appear {
+  animation: ai-chat-message-appear 250ms ease-out both;
+}
+
+.ai-chat-typing-dot {
+  animation: ai-chat-typing-bounce 1s ease-in-out infinite;
+}
