@@ -31,8 +31,11 @@ export function CategoryTabs({
   }, [selectedCategory]);
 
   const orderedCategories = [
-    ...categories.filter((category) => category !== "保存済み"),
+    ...categories.filter((category) => category === "すべて"),
     ...categories.filter((category) => category === "保存済み"),
+    ...categories.filter(
+      (category) => category !== "すべて" && category !== "保存済み"
+    ),
   ];
 
   return (
