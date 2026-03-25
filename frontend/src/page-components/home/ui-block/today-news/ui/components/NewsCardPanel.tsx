@@ -56,7 +56,7 @@ export function NewsCardPanel({
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 33vw"
-                loading={eagerImage ? "eager" : undefined}
+                priority={eagerImage}
               />
             </div>
           ) : (
