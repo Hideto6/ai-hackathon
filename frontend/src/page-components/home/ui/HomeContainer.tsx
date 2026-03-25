@@ -22,6 +22,14 @@ const defaultEnabledCategories: NewsCategory[] = [
   "社会",
 ];
 
+const defaultNotificationCategories: NewsCategory[] = [
+  "国際",
+  "政治",
+  "経済",
+  "テクノロジー",
+  "社会",
+];
+
 export function HomeContainer() {
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
   const [selectedCategory, setSelectedCategory] =
@@ -29,6 +37,9 @@ export function HomeContainer() {
   const [enabledCategories, setEnabledCategories] = useState<NewsCategory[]>(
     defaultEnabledCategories,
   );
+  const [notificationCategories, setNotificationCategories] = useState<
+    NewsCategory[]
+  >(defaultNotificationCategories);
 
   const visibleArticles = useMemo(() => {
     const enabled = homeDemoNewsItems.filter((article) =>
@@ -44,6 +55,18 @@ export function HomeContainer() {
 
   const handleToggleCategory = (category: NewsCategory) => {
     setEnabledCategories((current) => {
+      if (current.includes(category)) {
+        return current.length === 1
+          ? current
+          : current.filter((item) => item !== category);
+      }
+
+      return [...current, category];
+    });
+  };
+
+  const handleToggleNotificationCategory = (category: NewsCategory) => {
+    setNotificationCategories((current) => {
       if (current.includes(category)) {
         return current.length === 1
           ? current
@@ -73,10 +96,12 @@ export function HomeContainer() {
         ) : (
           <SettingsSection
             enabledCategories={enabledCategories}
+            notificationCategories={notificationCategories}
             selectableCategories={homeCategories.filter(
               (category): category is NewsCategory => category !== "すべて",
             )}
             onToggleCategory={handleToggleCategory}
+            onToggleNotificationCategory={handleToggleNotificationCategory}
           />
         )}
         <BottomNavigation activeTab={activeTab} onTabChange={setActiveTab} />
