@@ -9,7 +9,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Badge } from "@/shared/ui/shadcn/ui/badge";
 import { Button } from "@/shared/ui/shadcn/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/shadcn/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/shadcn/ui/card";
 import { cn } from "@/shared/ui/shadcn/lib/utils";
 
 export function StoryCardsSection({
@@ -30,13 +35,13 @@ export function StoryCardsSection({
 
   const goNext = () => {
     setCurrentCardIndex((current) =>
-      Math.min(current + 1, article.cards.length - 1)
+      Math.min(current + 1, article.cards.length - 1),
     );
   };
 
   const renderBody = (
     body: string,
-    terms: GlossaryTermEntity[] | undefined
+    terms: GlossaryTermEntity[] | undefined,
   ) => {
     if (!terms?.length) {
       return <p>{body}</p>;
@@ -72,7 +77,7 @@ export function StoryCardsSection({
                 className="font-medium underline decoration-muted-foreground/60 underline-offset-4 transition-colors hover:text-foreground"
               >
                 {term.term}
-              </button>
+              </button>,
             );
           }
 
@@ -88,11 +93,14 @@ export function StoryCardsSection({
     <section className="space-y-4">
       <div className="flex gap-2">
         {article.cards.map((card, index) => (
-          <div key={card.label} className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
+          <div
+            key={card.label}
+            className="h-1 flex-1 overflow-hidden rounded-full bg-muted"
+          >
             <div
               className={cn(
                 "h-full bg-foreground transition-all",
-                index <= currentCardIndex ? "w-full" : "w-0"
+                index <= currentCardIndex ? "w-full" : "w-0",
               )}
             />
           </div>
@@ -100,7 +108,9 @@ export function StoryCardsSection({
       </div>
       <div className="flex items-center justify-between gap-3">
         <Badge variant="outline">{article.category}</Badge>
-        <span className="text-xs text-muted-foreground">{article.timestamp}</span>
+        <span className="text-xs text-muted-foreground">
+          {article.timestamp}
+        </span>
       </div>
       <Card
         className="min-h-[320px] justify-between"
@@ -137,13 +147,20 @@ export function StoryCardsSection({
           {renderBody(currentCard.body, currentCard.highlightedTerms)}
         </CardContent>
         <CardContent className="flex items-center justify-between gap-3 pt-0">
-          <Button variant="ghost" size="icon" onClick={goPrev} disabled={isFirstCard}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={goPrev}
+            disabled={isFirstCard}
+          >
             <ChevronLeft className="size-5" />
           </Button>
-          <p className="text-center text-xs text-muted-foreground">
-            {isLastCard ? "最後のカードです" : "左右にスワイプ、またはボタンで次へ"}
-          </p>
-          <Button variant="ghost" size="icon" onClick={goNext} disabled={isLastCard}>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={goNext}
+            disabled={isLastCard}
+          >
             <ChevronRight className="size-5" />
           </Button>
         </CardContent>
