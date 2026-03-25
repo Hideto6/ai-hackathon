@@ -9,7 +9,6 @@ import {
   homeDemoNewsItems,
 } from "@/page-components/home/dummy-data/news";
 import { HeroSection } from "@/page-components/home/ui-block/hero/ui/HeroSection";
-import { NotificationPreviewSection } from "@/page-components/home/ui-block/notification-preview/ui/NotificationPreviewSection";
 import { SettingsSection } from "@/page-components/home/ui-block/settings/ui/SettingsSection";
 import { TodayNewsSection } from "@/page-components/home/ui-block/today-news/ui/TodayNewsSection";
 import { BottomNavigation } from "@/widgets/bottom-navigation/ui/BottomNavigation";
@@ -81,22 +80,17 @@ export function HomeContainer() {
     });
   };
 
-  const featuredArticle = visibleArticles[0] ?? homeDemoNewsItems[0];
-
   return (
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background shadow-sm">
         <HeroSection />
         {activeTab === "home" ? (
-          <>
-            <NotificationPreviewSection article={featuredArticle} />
-            <TodayNewsSection
-              categories={homeCategories}
-              selectedCategory={selectedCategory}
-              articles={visibleArticles}
-              onSelectCategory={setSelectedCategory}
-            />
-          </>
+          <TodayNewsSection
+            categories={homeCategories}
+            selectedCategory={selectedCategory}
+            articles={visibleArticles}
+            onSelectCategory={setSelectedCategory}
+          />
         ) : (
           <SettingsSection
             enabledCategories={enabledCategories}

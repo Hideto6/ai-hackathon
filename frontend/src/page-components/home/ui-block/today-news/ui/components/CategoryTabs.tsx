@@ -41,7 +41,7 @@ export function CategoryTabs({
   return (
     <div
       ref={scrollRef}
-      className="flex gap-2 overflow-x-auto border-b px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="flex gap-2 overflow-x-auto px-4 py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {orderedCategories.map((category) => {
         const isSelected = category === selectedCategory;
