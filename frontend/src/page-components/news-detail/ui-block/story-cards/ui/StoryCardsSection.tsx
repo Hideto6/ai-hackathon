@@ -10,7 +10,12 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Badge } from "@/shared/ui/shadcn/ui/badge";
 import { Button } from "@/shared/ui/shadcn/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/shadcn/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/shadcn/ui/card";
 import { cn } from "@/shared/ui/shadcn/lib/utils";
 
 export function StoryCardsSection({
@@ -47,6 +52,9 @@ export function StoryCardsSection({
   };
 
   const goNext = () => {
+    setCurrentCardIndex((current) =>
+      Math.min(current + 1, article.cards.length - 1),
+    );
     if (isLastCard) {
       completeStory("left");
       return;
@@ -108,7 +116,7 @@ export function StoryCardsSection({
 
   const renderBody = (
     body: string,
-    terms: GlossaryTermEntity[] | undefined
+    terms: GlossaryTermEntity[] | undefined,
   ) => {
     if (!terms?.length) {
       return <p>{body}</p>;
@@ -145,7 +153,7 @@ export function StoryCardsSection({
                 className="font-medium underline decoration-muted-foreground/60 underline-offset-4 transition-colors hover:text-foreground"
               >
                 {term.term}
-              </button>
+              </button>,
             );
           }
 
@@ -161,17 +169,24 @@ export function StoryCardsSection({
     <section className="flex flex-1 flex-col justify-center space-y-5">
       <div className="flex gap-2">
         {article.cards.map((card, index) => (
-          <div key={card.label} className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
+          <div
+            key={card.label}
+            className="h-1 flex-1 overflow-hidden rounded-full bg-muted"
+          >
             <div
               className={cn(
                 "h-full bg-foreground transition-all",
-                index <= currentCardIndex ? "w-full" : "w-0"
+                index <= currentCardIndex ? "w-full" : "w-0",
               )}
             />
           </div>
         ))}
       </div>
       <div className="flex items-center justify-between gap-3">
+        <Badge variant="outline">{article.category}</Badge>
+        <span className="text-xs text-muted-foreground">
+          {article.timestamp}
+        </span>
         <Badge variant="outline" className={theme.badgeClassName}>
           {article.category}
         </Badge>
@@ -212,6 +227,39 @@ export function StoryCardsSection({
                           return;
                         }
 
+          if (distance < -50) {
+            goPrev();
+          }
+        }}
+      >
+        <CardHeader className="gap-3">
+          <p className="text-sm text-muted-foreground">{currentCard.label}</p>
+          <CardTitle className="text-2xl leading-tight">
+            {currentCard.headline}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pb-0 text-base leading-8 text-muted-foreground">
+          {renderBody(currentCard.body, currentCard.highlightedTerms)}
+        </CardContent>
+        <CardContent className="flex items-center justify-between gap-3 pt-0">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={goPrev}
+            disabled={isFirstCard}
+          >
+            <ChevronLeft className="size-5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={goNext}
+            disabled={isLastCard}
+          >
+            <ChevronRight className="size-5" />
+          </Button>
+        </CardContent>
+      </Card>
                         handleDragStart(event.clientX);
                       }
                     : undefined
