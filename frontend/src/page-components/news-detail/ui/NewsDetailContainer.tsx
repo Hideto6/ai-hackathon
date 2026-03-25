@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 
 import type { GlossaryTermEntity } from "@/entities/glossary-term/model/types";
 import { getNewsDetailModel } from "@/page-components/news-detail/dummy-data/news";
+import { setHomeNewsSaved } from "@/page-components/home/dummy-data/news";
 import { GlossaryPopoverSection } from "@/page-components/news-detail/ui-block/glossary-popover/ui/GlossaryPopoverSection";
 import { RecommendationSection } from "@/page-components/news-detail/ui-block/recommendation/ui/RecommendationSection";
 import { SaveActionSection } from "@/page-components/news-detail/ui-block/save-action/ui/SaveActionSection";
@@ -53,7 +54,13 @@ export function NewsDetailContainer() {
             />
             <SaveActionSection
               isSaved={isSaved}
-              onToggleSaved={() => setIsSaved((current) => !current)}
+              onToggleSaved={() => {
+                setIsSaved((current) => {
+                  const next = !current;
+                  setHomeNewsSaved(params.newsId, next);
+                  return next;
+                });
+              }}
             />
             <RecommendationSection articles={detail.recommendations} />
           </div>
