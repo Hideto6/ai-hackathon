@@ -58,11 +58,9 @@ export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
           size="icon"
           className={cn(isSaved && "text-blue-600")}
           onClick={() => {
-            setIsSaved((current) => {
-              const next = !current;
-              onToggleSaved(article.id, next);
-              return next;
-            });
+            const next = !isSaved;
+            setIsSaved(next);
+            onToggleSaved(article.id, next);
           }}
         >
           <Bookmark className={cn("size-4", isSaved && "fill-blue-600 text-blue-600")} />
