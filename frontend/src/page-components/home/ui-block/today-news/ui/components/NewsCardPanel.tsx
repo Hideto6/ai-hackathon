@@ -6,14 +6,13 @@ import { useState } from "react";
 
 import { newsCategoryTheme } from "@/entities/news/model/category-theme";
 import type { NewsEntity } from "@/entities/news/model/types";
-import { ArrowRight, Bookmark } from "lucide-react";
+import { ArrowUpRight, Bookmark } from "lucide-react";
 
 import { Badge } from "@/shared/ui/shadcn/ui/badge";
 import { Button } from "@/shared/ui/shadcn/ui/button";
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/shared/ui/shadcn/ui/card";
@@ -22,9 +21,14 @@ import { cn } from "@/shared/ui/shadcn/lib/utils";
 interface NewsCardPanelProps {
   article: NewsEntity;
   onToggleSaved: (newsId: string, saved: boolean) => void;
+  showSaveButton?: boolean;
 }
 
-export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
+export function NewsCardPanel({
+  article,
+  onToggleSaved,
+  showSaveButton = true,
+}: NewsCardPanelProps) {
   const [isSaved, setIsSaved] = useState(article.isSaved ?? false);
   const theme = newsCategoryTheme[article.category];
   const thumbnailImageUrl = article.thumbnail?.imageUrl;
@@ -32,7 +36,7 @@ export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
     article.thumbnail?.placeholderText ?? "画像を配置してください";
 
   return (
-    <Card className="relative gap-3 overflow-hidden transition-transform duration-150 hover:-translate-y-0.5">
+    <Card className="relative flex flex-col gap-3 overflow-hidden transition-transform duration-150 hover:-translate-y-0.5">
       <Link
         href={`/news/${article.id}`}
         aria-label={`${article.headline} を開く`}
@@ -69,29 +73,37 @@ export function NewsCardPanel({ article, onToggleSaved }: NewsCardPanelProps) {
           {article.headline}
         </CardTitle>
       </CardHeader>
-
-      <CardFooter className="relative z-20 justify-between gap-2 py-3">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className={cn("pointer-events-auto", isSaved && "text-blue-600")}
-          onClick={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            const next = !isSaved;
-            setIsSaved(next);
-            onToggleSaved(article.id, next);
-          }}
+      <CardContent className="pt-0 pb-1">
+        <div
+          className={cn(
+            "relative z-20 flex items-center pt-3",
+            showSaveButton ? "justify-between" : "justify-end"
+          )}
         >
-          <Bookmark className={cn("size-4", isSaved && "fill-blue-600 text-blue-600")} />
-          <span className="sr-only">{isSaved ? "保存済み" : "保存する"}</span>
-        </Button>
+        {showSaveButton ? (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className={cn("pointer-events-auto", isSaved && "text-blue-600")}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              const next = !isSaved;
+              setIsSaved(next);
+              onToggleSaved(article.id, next);
+            }}
+          >
+            <Bookmark className={cn("size-4", isSaved && "fill-blue-600 text-blue-600")} />
+            <span className="sr-only">{isSaved ? "保存済み" : "保存する"}</span>
+          </Button>
+        ) : null}
         <span className="pointer-events-none flex items-center gap-1 text-sm font-medium text-foreground">
           開く
-          <ArrowRight className="size-4" />
+          <ArrowUpRight className="size-4" />
         </span>
-      </CardFooter>
+        </div>
+      </CardContent>
     </Card>
   );
 }
