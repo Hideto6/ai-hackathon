@@ -1,6 +1,10 @@
 import type { NewsEntity } from "./types";
 
-export const newsData: NewsEntity[] = [
+type RawNewsEntity = Omit<NewsEntity, "thumbnail"> & {
+  thumbnail?: NewsEntity["thumbnail"];
+};
+
+const rawNewsData: RawNewsEntity[] = [
   {
     id: "7",
     category: "政治",
@@ -300,3 +304,11 @@ export const newsData: NewsEntity[] = [
     ],
   },
 ];
+
+export const newsData: NewsEntity[] = rawNewsData.map((article) => ({
+  ...article,
+  thumbnail: article.thumbnail ?? {
+    alt: `${article.category}ニュースのサムネイル`,
+    placeholderText: "画像を配置してください",
+  },
+}));
