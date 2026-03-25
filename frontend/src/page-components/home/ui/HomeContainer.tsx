@@ -4,7 +4,10 @@ import { useMemo, useState } from "react";
 
 import type { NewsCategory } from "@/entities/news/model/types";
 import type { HomeCategory, HomeTab } from "@/page-components/home/model/types";
-import { homeCategories, homeDemoNewsItems } from "@/page-components/home/dummy-data/news";
+import {
+  homeCategories,
+  homeDemoNewsItems,
+} from "@/page-components/home/dummy-data/news";
 import { HeroSection } from "@/page-components/home/ui-block/hero/ui/HeroSection";
 import { NotificationPreviewSection } from "@/page-components/home/ui-block/notification-preview/ui/NotificationPreviewSection";
 import { SettingsSection } from "@/page-components/home/ui-block/settings/ui/SettingsSection";
@@ -21,13 +24,15 @@ const defaultEnabledCategories: NewsCategory[] = [
 
 export function HomeContainer() {
   const [activeTab, setActiveTab] = useState<HomeTab>("home");
-  const [selectedCategory, setSelectedCategory] = useState<HomeCategory>("すべて");
-  const [enabledCategories, setEnabledCategories] =
-    useState<NewsCategory[]>(defaultEnabledCategories);
+  const [selectedCategory, setSelectedCategory] =
+    useState<HomeCategory>("すべて");
+  const [enabledCategories, setEnabledCategories] = useState<NewsCategory[]>(
+    defaultEnabledCategories,
+  );
 
   const visibleArticles = useMemo(() => {
     const enabled = homeDemoNewsItems.filter((article) =>
-      enabledCategories.includes(article.category)
+      enabledCategories.includes(article.category),
     );
 
     if (selectedCategory === "すべて") {
@@ -54,7 +59,7 @@ export function HomeContainer() {
   return (
     <div className="min-h-screen bg-muted/30">
       <div className="mx-auto flex min-h-screen max-w-md flex-col bg-background shadow-sm">
-        <HeroSection activeTab={activeTab} />
+        <HeroSection />
         {activeTab === "home" ? (
           <>
             <NotificationPreviewSection article={featuredArticle} />
@@ -69,7 +74,7 @@ export function HomeContainer() {
           <SettingsSection
             enabledCategories={enabledCategories}
             selectableCategories={homeCategories.filter(
-              (category): category is NewsCategory => category !== "すべて"
+              (category): category is NewsCategory => category !== "すべて",
             )}
             onToggleCategory={handleToggleCategory}
           />
