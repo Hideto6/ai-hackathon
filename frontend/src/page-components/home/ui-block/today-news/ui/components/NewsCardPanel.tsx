@@ -103,7 +103,7 @@ export function NewsCardPanel({
       <CardContent className="pointer-events-none pt-0 pb-1">
         <div
           className={cn(
-            "relative z-20 flex items-center pt-3",
+            "flex items-center pt-3",
             showFooterSaveButton ? "justify-between" : "justify-start"
           )}
         >
