@@ -174,7 +174,7 @@ export function AiChatModal({
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="気になることを聞いてみよう"
-            className="flex-1 rounded-full border-0 bg-[#2a2a2a] px-4 py-2.5 text-sm text-white placeholder-neutral-500 outline-none focus:ring-1 focus:ring-neutral-500"
+            className="flex-1 rounded-full border-0 bg-[#2a2a2a] px-4 py-2.5 text-base text-white placeholder-neutral-500 outline-none focus:ring-1 focus:ring-neutral-500"
           />
           <button
             type="button"

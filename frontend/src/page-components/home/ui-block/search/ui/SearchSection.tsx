@@ -60,7 +60,7 @@ export function SearchSection({
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
           placeholder="キーワードで記事を検索..."
-          className="h-11 w-full rounded-full border border-gray-200 bg-white pl-11 pr-4 text-sm text-black placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+          className="h-11 w-full rounded-full border border-gray-200 bg-white pl-11 pr-4 text-base text-black placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
         />
       </div>
 
