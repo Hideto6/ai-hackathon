@@ -27,7 +27,8 @@ export function RecommendationSection({
             key={article.id}
             article={article}
             onToggleSaved={() => {}}
-            showSaveButton={false}
+            showSaveButton
+            saveButtonPosition="header"
           />
         ))}
       </div>

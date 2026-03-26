@@ -23,6 +23,7 @@ interface NewsCardPanelProps {
   onToggleSaved: (newsId: string, saved: boolean) => void;
   showSaveButton?: boolean;
   eagerImage?: boolean;
+  saveButtonPosition?: "footer" | "header";
 }
 
 export function NewsCardPanel({
@@ -30,6 +31,7 @@ export function NewsCardPanel({
   onToggleSaved,
   showSaveButton = true,
   eagerImage = false,
+  saveButtonPosition = "header",
 }: NewsCardPanelProps) {
   const [isSaved, setIsSaved] = useState(article.isSaved ?? false);
   const theme = newsCategoryTheme[article.category] ?? {
@@ -37,6 +39,26 @@ export function NewsCardPanel({
     badgeClassName: "border-gray-200 bg-gray-50 text-gray-700",
   };
   const thumbnailImageUrl = article.thumbnail?.imageUrl;
+  const showHeaderSaveButton = showSaveButton && saveButtonPosition === "header";
+  const showFooterSaveButton = showSaveButton && saveButtonPosition === "footer";
+  const saveButton = showSaveButton ? (
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon"
+      className={cn("pointer-events-auto size-12", isSaved && "text-blue-600")}
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const next = !isSaved;
+        setIsSaved(next);
+        onToggleSaved(article.id, next);
+      }}
+    >
+      <Bookmark className={cn("size-6", isSaved && "fill-blue-600 text-blue-600")} />
+      <span className="sr-only">{isSaved ? "保存済み" : "保存する"}</span>
+    </Button>
+  ) : null;
 
   return (
     <Card className="relative flex flex-col gap-3 overflow-hidden transition-transform duration-150 hover:-translate-y-0.5">
@@ -69,37 +91,23 @@ export function NewsCardPanel({
           <Badge variant="outline" className={theme.badgeClassName}>
             {article.category}
           </Badge>
-          <span className="text-xs text-muted-foreground">{article.timestamp}</span>
+          <div className="flex items-center gap-1">
+            <span className="text-xs text-muted-foreground">{article.timestamp}</span>
+            {showHeaderSaveButton ? saveButton : null}
+          </div>
         </div>
         <CardTitle className="text-base font-semibold leading-relaxed">
           {article.headline}
         </CardTitle>
       </CardHeader>
-      <CardContent className="pt-0 pb-1">
+      <CardContent className="pointer-events-none pt-0 pb-1">
         <div
           className={cn(
             "relative z-20 flex items-center pt-3",
-            showSaveButton ? "justify-between" : "justify-end"
+            showFooterSaveButton ? "justify-between" : "justify-start"
           )}
         >
-        {showSaveButton ? (
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className={cn("pointer-events-auto", isSaved && "text-blue-600")}
-            onClick={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              const next = !isSaved;
-              setIsSaved(next);
-              onToggleSaved(article.id, next);
-            }}
-          >
-            <Bookmark className={cn("size-4", isSaved && "fill-blue-600 text-blue-600")} />
-            <span className="sr-only">{isSaved ? "保存済み" : "保存する"}</span>
-          </Button>
-        ) : null}
+        {showFooterSaveButton ? saveButton : null}
         <span className="pointer-events-none flex items-center gap-1 text-sm font-medium text-foreground">
           開く
           <ArrowUpRight className="size-4" />
